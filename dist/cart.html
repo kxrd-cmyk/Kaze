@@ -567,7 +567,7 @@
     window.addEventListener('DOMContentLoaded', () => {
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
         const cartItemsContainer = document.querySelector('.cart-items');
-        const cartTotal = document.querySelector('.cart-total-amount span:last-child');
+        const cartTotal = document.querySelector('.cart-total span:last-child');
         if (!cartItemsContainer || !cartTotal) return;
 
         if (cart.length === 0) {
