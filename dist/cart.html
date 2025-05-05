@@ -598,7 +598,8 @@
         function updateQuantity(id, change) {
             const item = cart.find(item => item.id === id);
             if (item) {
-                item.quantity = Math.max(1, item.quantity + change);
+                const newQuantity = Math.max(1, item.quantity + change);
+                item.quantity = newQuantity;
                 localStorage.setItem('cart', JSON.stringify(cart));
                 updateCart();
             }
@@ -623,21 +624,24 @@
                 return;
             }
 
-            cartItems.innerHTML = cart.map(item => `
-                <div class="cart-item">
-                    <button class="remove-item-btn" onclick="removeFromCart(${item.id})">×</button>
-                    <img src="${item.image}" alt="${item.name}" class="cart-item-image">
-                    <div class="cart-item-details">
-                        <h3 class="cart-item-name">${item.name}</h3>
-                        <p class="cart-item-price">₹${item.price.toLocaleString('en-IN')}</p>
-                        <div class="cart-item-quantity">
-                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
-                            <span>${item.quantity}</span>
-                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+            cartItems.innerHTML = cart.map(item => {
+                const itemTotal = item.price * item.quantity;
+                return `
+                    <div class="cart-item">
+                        <button class="remove-item-btn" onclick="removeFromCart(${item.id})">×</button>
+                        <img src="${item.image}" alt="${item.name}" class="cart-item-image">
+                        <div class="cart-item-details">
+                            <h3 class="cart-item-name">${item.name}</h3>
+                            <p class="cart-item-price">₹${itemTotal.toLocaleString('en-IN')}</p>
+                            <div class="cart-item-quantity">
+                                <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                                <span>${item.quantity}</span>
+                                <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
 
             const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             cartTotal.innerHTML = `<span>Total:</span><span>₹${total.toLocaleString('en-IN')}</span>`;

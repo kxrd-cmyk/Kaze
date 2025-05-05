@@ -1459,12 +1459,12 @@
 
             const selectedSize = document.querySelector('.size-option.selected')?.dataset.size || 'M';
             const selectedColor = document.querySelector('.color-option.selected')?.dataset.color || 'Black';
-            const quantity = parseInt(quantityValue.textContent);
+            const quantity = Math.max(1, parseInt(quantityValue.textContent));
 
             const cartItem = {
                 id: Date.now(),
                 name: `${product.title} - ${selectedSize} - ${selectedColor}`,
-                price: product.price,
+                price: parseFloat(product.price),
                 image: product.image,
                 quantity: quantity
             };
