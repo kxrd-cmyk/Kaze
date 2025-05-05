@@ -28,17 +28,17 @@ Kaze/
 ├── css/
 │   └── mobile.css
 ├── js/
-├── Kaze.html          # Main landing page
-├── Mens.html          # Men's collection page
-├── Womens.html        # Women's collection page
-├── Latest-Releases.html
+├── kaze.html          # Main landing page
+├── mens.html          # Men's collection page
+├── womens.html        # Women's collection page
+├── latest-releases.html
 ├── product-detail.html
 ├── cart.html
 ├── login.html
 ├── register.html
 ├── user-profile.html
 ├── faq.html
-└── ABOUTUS.HTML
+└── aboutus.html
 ```
 
 ## Getting Started
@@ -47,7 +47,7 @@ Kaze/
 2. Ensure you have the required fonts:
    - Hellshunx (for branding)
    - Helvetica Neue (for general content)
-3. Open `Kaze.html` in a modern web browser
+3. Open `kaze.html` in a modern web browser
 
 ## Key Features Implementation
 
