@@ -1389,6 +1389,7 @@
         const productId = urlParams.get('product');
 
         // Load product data
+        let parsedProductPrice = 0;
         function loadProductData() {
             const product = products[productId] || {
                 title: 'Product Not Found',
@@ -1401,6 +1402,9 @@
                 sku: 'N/A'
             };
 
+            // Parse price string to number (remove non-numeric chars except dot)
+            parsedProductPrice = typeof product.price === 'string' ? parseFloat(product.price.replace(/[^0-9.]/g, '')) : product.price;
+
             // Update page title
             document.title = `KAZE | ${product.title}`;
 
@@ -1408,7 +1412,8 @@
             document.getElementById('product-image').src = product.image;
             document.getElementById('product-image').alt = product.title;
             document.getElementById('product-title').textContent = product.title;
-            document.getElementById('product-price').textContent = product.price;
+            // Format price for display
+            document.getElementById('product-price').textContent = `₹${parsedProductPrice.toLocaleString('en-IN')}`;
             document.getElementById('product-description').textContent = product.description;
             document.getElementById('material').textContent = product.material;
             document.getElementById('care').textContent = product.care;
@@ -1462,13 +1467,11 @@
             let quantity = parseInt(quantityValue.textContent);
             if (isNaN(quantity) || quantity < 1) quantity = 1;
 
-            // Parse price string to number (remove non-numeric chars except dot)
-            const parsedPrice = typeof product.price === 'string' ? parseFloat(product.price.replace(/[^0-9.]/g, '')) : product.price;
-
+            // Use parsedProductPrice for cart
             const cartItem = {
                 id: Date.now(),
                 name: `${product.title} - ${selectedSize} - ${selectedColor}`,
-                price: parsedPrice,
+                price: parsedProductPrice,
                 image: product.image,
                 quantity: quantity
             };
