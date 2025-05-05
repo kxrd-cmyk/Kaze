@@ -876,7 +876,6 @@
 
         function addToCart(name, price, image) {
             const existingItem = cart.find(item => item.name === name);
-            
             if (existingItem) {
                 existingItem.quantity += 1;
             } else {
@@ -885,13 +884,11 @@
                     name,
                     price,
                     image,
-                    quantity: 1
+                    quantity: 1 // Always 1 for new items
                 });
             }
-            
             localStorage.setItem('cart', JSON.stringify(cart));
             updateCartCount();
-            
             // Add button animation
             const button = event.target.closest('.add-to-cart-btn');
             button.classList.add('clicked');
