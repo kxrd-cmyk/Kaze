@@ -490,92 +490,6 @@
             }
         }
 
-        /* Cart Preview */
-        .cart-preview {
-            position: fixed;
-            top: 80px;
-            right: 30px;
-            background: rgba(0, 0, 0, 0.95);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 20px;
-            width: 300px;
-            max-height: 400px;
-            overflow-y: auto;
-            display: none;
-            z-index: 1000;
-            backdrop-filter: blur(10px);
-        }
-
-        .cart-preview.active {
-            display: block;
-        }
-
-        .preview-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .preview-item:last-child {
-            border-bottom: none;
-        }
-
-        .preview-image {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-            border-radius: 8px;
-        }
-
-        .preview-details {
-            flex-grow: 1;
-        }
-
-        .preview-name {
-            font-size: 0.9rem;
-            margin-bottom: 5px;
-        }
-
-        .preview-price {
-            font-size: 0.8rem;
-            opacity: 0.8;
-        }
-
-        .preview-quantity {
-            font-size: 0.8rem;
-            opacity: 0.6;
-        }
-
-        .preview-total {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.1rem;
-        }
-
-        .view-cart-btn {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            background: white;
-            color: black;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 8px;
-            margin-top: 15px;
-            transition: all 0.3s ease;
-        }
-
-        .view-cart-btn:hover {
-            background: rgba(255, 255, 255, 0.9);
-            transform: translateY(-2px);
-        }
-
         @media (max-width: 768px) {
             .cart-item {
                 flex-direction: column;
@@ -590,11 +504,6 @@
             .remove-item-btn {
                 top: 10px;
                 right: 10px;
-            }
-
-            .cart-preview {
-                width: 90%;
-                right: 5%;
             }
         }
     </style>
