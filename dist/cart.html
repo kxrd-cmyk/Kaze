@@ -591,10 +591,13 @@
             }
         });
 
+        // Clear legacy cart data on page load
+        localStorage.removeItem('cart');
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
         // Cart Functionality
         const cartItems = document.querySelector('.cart-items');
         const cartTotal = document.querySelector('.cart-total');
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
         function updateQuantity(id, change) {
             const item = cart.find(item => item.id === id);

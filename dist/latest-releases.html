@@ -760,7 +760,8 @@
             }
         });
 
-        // Cart Functionality
+        // Clear legacy cart data on page load
+        localStorage.removeItem('cart');
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
         function addToCart(name, price, image) {

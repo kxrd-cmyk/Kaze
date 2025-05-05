@@ -1209,7 +1209,8 @@
             }
         });
 
-        // Cart Functionality
+        // Clear legacy cart data on page load
+        localStorage.removeItem('cart');
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
         function updateCartCount() {
@@ -1468,33 +1469,26 @@
             let quantity = parseInt(quantityValue.textContent);
             if (isNaN(quantity) || quantity < 1) quantity = 1;
 
-            // Use parsedProductPrice for cart
+            // Parse price string to number (remove non-numeric chars except dot)
+            const parsedPrice = typeof product.price === 'string' ? parseFloat(product.price.replace(/[^0-9.]/g, '')) : product.price;
+
             const cartItem = {
                 id: Date.now(),
                 name: `${product.title} - ${selectedSize} - ${selectedColor}`,
-                price: parsedProductPrice,
+                price: parsedPrice,
                 image: product.image,
                 quantity: quantity
             };
 
-            const existingItemIndex = cart.findIndex(item => 
-                item.name === cartItem.name
-            );
-
-            if (existingItemIndex !== -1) {
-                cart[existingItemIndex].quantity += quantity;
+            // Check if item already exists in cart
+            const existingItem = cart.find(item => item.name === cartItem.name);
+            if (existingItem) {
+                existingItem.quantity += 1;
             } else {
                 cart.push(cartItem);
             }
-
             localStorage.setItem('cart', JSON.stringify(cart));
             updateCartCount();
-
-            // Show success message
-            addToCartBtn.textContent = 'ADDED TO CART!';
-            setTimeout(() => {
-                addToCartBtn.textContent = 'ADD TO CART';
-            }, 2000);
         });
 
         // Load product data when page loads
