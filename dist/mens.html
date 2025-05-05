@@ -840,6 +840,20 @@
         </div>
     </section>
 
+    <!-- TEST BUTTON FOR CART DEBUGGING -->
+    <div style="text-align:center; margin: 20px 0;">
+        <button id="add-test-item" style="padding: 10px 20px; font-size: 1.2rem;">Add Test Item</button>
+    </div>
+    <script>
+    document.getElementById('add-test-item').addEventListener('click', function() {
+        addToCart({
+            name: 'Test Product',
+            price: '₹999',
+            image: 'https://via.placeholder.com/150'
+        });
+    });
+    </script>
+
     <script src="dist/main.js"></script>
 </body>
 </html>
