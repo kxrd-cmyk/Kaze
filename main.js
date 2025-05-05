@@ -37,3 +37,53 @@ class CartManager {
         localStorage.setItem('cart', JSON.stringify(this.cart));
     }
 }
+
+// Cart Functionality
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+function addToCart(event, name, price, image) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const existingItem = cart.find(item => item.name === name);
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push({
+            id: Date.now(),
+            name,
+            price,
+            image,
+            quantity: 1
+        });
+    }
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartCount();
+
+    // Add button animation
+    const button = event.target.closest('.add-to-cart-btn');
+    button.classList.add('clicked');
+    setTimeout(() => {
+        button.classList.remove('clicked');
+    }, 1500);
+}
+
+function updateCartCount() {
+    const cartCount = document.querySelector('.cart-count');
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    cartCount.textContent = totalItems;
+}
+
+// Attach event listeners directly (no DOMContentLoaded needed)
+document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+    button.addEventListener('click', (event) => {
+        const card = button.closest('.release-card');
+        const name = card.querySelector('.release-title').textContent;
+        const price = card.querySelector('.release-price').textContent;
+        const image = card.querySelector('.release-image').src;
+        addToCart(event, name, price, image);
+    });
+});
+
+// Initialize cart count
+updateCartCount();
