@@ -625,7 +625,9 @@
             }
 
             cartItems.innerHTML = cart.map(item => {
-                const itemTotal = item.price * item.quantity;
+                // Parse price in case it's a string with currency symbol
+                let price = typeof item.price === 'string' ? parseFloat(item.price.replace(/[^0-9.]/g, '')) : item.price;
+                const itemTotal = price * item.quantity;
                 return `
                     <div class="cart-item">
                         <button class="remove-item-btn" onclick="removeFromCart(${item.id})">×</button>
@@ -643,7 +645,11 @@
                 `;
             }).join('');
 
-            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            // Calculate total using parsed price
+            const total = cart.reduce((sum, item) => {
+                let price = typeof item.price === 'string' ? parseFloat(item.price.replace(/[^0-9.]/g, '')) : item.price;
+                return sum + (price * item.quantity);
+            }, 0);
             cartTotal.innerHTML = `<span>Total:</span><span>₹${total.toLocaleString('en-IN')}</span>`;
         }
 
