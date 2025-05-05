@@ -760,8 +760,7 @@
             }
         });
 
-        // Clear legacy cart data on page load
-        localStorage.removeItem('cart');
+        // Cart Functionality
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
         function addToCart(name, price, image) {
@@ -774,11 +773,17 @@
                     name,
                     price,
                     image,
-                    quantity: 1 // Always 1 for new items
+                    quantity: 1
                 });
             }
             localStorage.setItem('cart', JSON.stringify(cart));
             updateCartCount();
+            // Add button animation
+            const button = event.target.closest('.add-to-cart-btn');
+            button.classList.add('clicked');
+            setTimeout(() => {
+                button.classList.remove('clicked');
+            }, 1500);
         }
 
         function updateCartCount() {
