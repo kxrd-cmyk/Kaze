@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAZE | Your Account</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @font-face {
+            font-family: 'Hellshunx';
+            src: url('./fonts/Hellshunx.ttf') format('truetype');
+            font-weight: lighter;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Background Animation */
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: #000;
+            overflow: hidden;
+        }
+
+        .background-animation::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center,
+                rgba(255, 255, 255, 0.1) 0%,
+                rgba(255, 255, 255, 0.05) 20%,
+                rgba(255, 255, 255, 0.02) 40%,
+                transparent 70%
+            );
+            animation: pulseGlow 4s ease-in-out infinite;
+        }
+
+        .spiral-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        .spiral-path {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.1);
+            stroke-width: 1;
+        }
+
+        .neon-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+            width: 100%;
+            height: 100%;
+        }
+
+        .neon-ring::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .neon-ring::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            animation: echo 4s ease-out infinite;
+        }
+
+        .neon-ring:nth-child(1) {
+            width: 200px;
+            height: 200px;
+            animation: rotate 20s linear infinite;
+        }
+
+        .neon-ring:nth-child(2) {
+            width: 324px;
+            height: 324px;
+            animation: rotate 15s linear infinite reverse;
+        }
+
+        .neon-ring:nth-child(3) {
+            width: 524px;
+            height: 524px;
+            animation: rotate 25s linear infinite;
+        }
+
+        .neon-ring:nth-child(4) {
+            width: 848px;
+            height: 848px;
+            animation: rotate 18s linear infinite reverse;
+        }
+
+        .neon-ring:nth-child(5) {
+            width: 1372px;
+            height: 1372px;
+            animation: rotate 22s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.5;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes echo {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes dash {
+            0% {
+                stroke-dashoffset: 0;
+            }
+            100% {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 0.8;
+            }
+        }
+
+        /* Logo Styles */
+        .logo-container {
+            text-align: center;
+            padding: 2rem 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo {
+            font-size: 9.4rem;
+            letter-spacing: 6px;
+            font-family: 'Hellshunx', sans-serif !important;
+            font-weight: 100;
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.7);
+        }
+
+        .logo-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Existing Profile Styles */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .profile-header {
+            background: transparent;
+            padding: 3rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .profile-picture-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .profile-picture {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: contain;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            background-color: #000;
+            padding: 20px;
+            display: block;
+        }
+
+        .profile-picture-upload {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .profile-picture-upload:hover {
+            background: rgba(0, 0, 0, 0.9);
+        }
+
+        .profile-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .section-title {
+            font-family: 'Hellshunx', sans-serif;
+            font-weight: 100;
+            letter-spacing: 2px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn {
+            position: relative;
+            background: rgba(40, 40, 40, 0.5);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 0.9rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            z-index: 2;
+            backdrop-filter: blur(5px);
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .btn:hover {
+            background: rgba(60, 60, 60, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn.clicked {
+            background: rgba(80, 80, 80, 0.7);
+            transform: scale(0.95);
+        }
+
+        .btn-primary {
+            background: rgba(40, 40, 40, 0.5);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: rgba(60, 60, 60, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: rgba(40, 40, 40, 0.5);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-danger:hover {
+            background: rgba(60, 60, 60, 0.6);
+            transform: translateY(-2px);
+        }
+
+        .verification-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .verification-badge.verified {
+            background: rgba(0, 255, 0, 0.1);
+            color: #00ff00;
+        }
+
+        .verification-badge.unverified {
+            background: rgba(255, 165, 0, 0.1);
+            color: #ffa500;
+        }
+
+        .address-fields {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .address-fields {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Adjust container spacing for the new layout */
+        .container.profile-content {
+            margin-top: -2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Sidebar Styles */
+        .nav-toggle {
+            position: fixed;
+            left: 30px;
+            top: 30px;
+            z-index: 1000;
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-toggle span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: white;
+            transition: all 0.3s ease;
+        }
+
+        .nav-toggle.active span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+
+        .nav-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .nav-toggle.active span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        .sidebar {
+            position: fixed;
+            left: -300px;
+            top: 0;
+            width: 300px;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 999;
+            padding: 100px 40px 0;
+            transition: left 0.3s ease;
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .nav-category {
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 15px;
+            margin-top: 20px;
+        }
+
+        .nav-category:first-child {
+            margin-top: 0;
+        }
+
+        .nav-links {
+            list-style: none;
+            flex-grow: 1;
+            margin-bottom: 0;
+        }
+
+        .nav-links:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            display: block;
+            padding: 10px 0;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+            transform: translateX(5px);
+        }
+
+        .profile-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            padding: 20px 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.95);
+            width: 100%;
+            margin-top: 0;
+        }
+
+        .profile-link:hover {
+            opacity: 1;
+        }
+
+        .profile-icon {
+            font-size: 1.2rem;
+        }
+
+        .cart-btn {
+            margin-top: auto;
+            order: 2;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            padding: 20px 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.95);
+            width: 100%;
+            cursor: pointer;
+            position: relative;
+            z-index: 1000;
+        }
+
+        .cart-btn:hover {
+            opacity: 1;
+            transform: translateY(-2px);
+        }
+
+        .cart-icon {
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        /* Wishlist Button Styles */
+        .wishlist-btn {
+            position: fixed;
+            right: 30px;
+            top: 30px;
+            z-index: 1000;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 5px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wishlist-btn:hover {
+            color: #ff4d4d;
+            transform: scale(1.1);
+        }
+
+        .wishlist-btn.active {
+            color: #ff4d4d;
+            animation: heartBeat 0.5s ease;
+        }
+
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.2); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .cart-icon, .profile-icon, .wishlist-btn i {
+            color: white;
+            filter: brightness(0) invert(1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="background-animation">
+        <div class="neon-ring"></div>
+        <div class="neon-ring"></div>
+        <div class="neon-ring"></div>
+        <div class="neon-ring"></div>
+        <div class="neon-ring"></div>
+    </div>
+
+    <!-- Main Content -->
+    <!-- Logo -->
+    <div class="logo-container">
+        <a href="Kaze.html" class="logo-link">
+            <h1 class="logo">Kaze</h1>
+        </a>
+    </div>
+
+    <div class="profile-header">
+        <div class="container">
+            <div class="profile-picture-container">
+                <img src="./images/k-symbol.png" alt="Profile Picture" class="profile-picture" id="profilePicture">
+                <label class="profile-picture-upload" for="pictureUpload">
+                    <i class="fas fa-pencil"></i>
+                </label>
+                <input type="file" id="pictureUpload" accept="image/*" style="display: none;">
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Add error and success message elements -->
+        <div id="errorMessage" style="display: none; color: #ff4444; text-align: center; margin-bottom: 1rem;"></div>
+        <div id="successMessage" style="display: none; color: #00ff00; text-align: center; margin-bottom: 1rem;"></div>
+        
+        <div class="profile-section">
+            <h2 class="section-title"><i class="fas fa-user"></i> Account Information</h2>
+            <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" class="form-control" id="email" value="user@example.com" readonly>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Phone Number</label>
+                <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number">
+            </div>
+            <button class="btn btn-danger" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+
+        <div class="profile-section">
+            <h2 class="section-title"><i class="fas fa-map-marker-alt"></i> Shipping Address</h2>
+            <form id="addressForm">
+                <div class="address-fields">
+                    <div class="form-group">
+                        <label class="form-label">Street Address</label>
+                        <input type="text" class="form-control" id="street" placeholder="Enter your street address">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Apartment/Suite</label>
+                        <input type="text" class="form-control" id="apartment" placeholder="Apartment, suite, unit, etc. (optional)">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">City</label>
+                        <input type="text" class="form-control" id="city" placeholder="Enter your city">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">State/Province</label>
+                        <input type="text" class="form-control" id="state" placeholder="Enter your state">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">ZIP/Postal Code</label>
+                        <input type="text" class="form-control" id="zip" placeholder="Enter your ZIP code">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Country</label>
+                        <input type="text" class="form-control" id="country" placeholder="Enter your country">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Save Address
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Navigation Toggle Button -->
+    <button class="nav-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- Wishlist Button -->
+    <button class="wishlist-btn" id="wishlistBtn">
+        <i class="fas fa-heart"></i>
+    </button>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="nav-category">CATEGORIES</div>
+        <ul class="nav-links">
+            <li><a href="Mens.html">MENS</a></li>
+            <li><a href="Womens.html">WOMENS</a></li>
+            <li><a href="Latest-Releases.html">LATEST RELEASES</a></li>
+        </ul>
+        <a href="login.html" class="profile-link">
+            <div class="profile-icon">👤</div>
+            <span>LOGIN / REGISTER</span>
+        </a>
+        <!-- Add cart button -->
+        <a href="cart.html" class="cart-btn">
+            <div class="cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count">0</span>
+            </div>
+            <span>CART</span>
+        </a>
+    </nav>
+
+    <script>
+        // Load saved profile picture and email when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load saved email
+            const savedEmail = localStorage.getItem('userEmail');
+            if (savedEmail) {
+                document.getElementById('email').value = savedEmail;
+                
+                // Load saved profile picture for this user
+                const savedImage = localStorage.getItem(`profilePicture_${savedEmail}`);
+                if (savedImage) {
+                    document.getElementById('profilePicture').src = savedImage;
+                }
+
+                // Load saved phone number
+                const savedPhone = localStorage.getItem(`phone_${savedEmail}`);
+                if (savedPhone) {
+                    document.getElementById('phone').value = savedPhone;
+                }
+            }
+            updateProfileLink();
+            updateCartCount();
+        });
+
+        // Profile picture upload handling
+        document.getElementById('pictureUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageData = e.target.result;
+                    document.getElementById('profilePicture').src = imageData;
+                    
+                    const userEmail = localStorage.getItem('userEmail');
+                    if (userEmail) {
+                        // Fix template literal syntax
+                        localStorage.setItem(`profilePicture_${userEmail}`, imageData);
+                        
+                        let profilePictures = JSON.parse(localStorage.getItem('allProfilePictures') || '{}');
+                        profilePictures[userEmail] = true;
+                        localStorage.setItem('allProfilePictures', JSON.stringify(profilePictures));
+                        
+                        // Fix template literal syntax
+                        localStorage.setItem(`profilePictureTimestamp_${userEmail}`, new Date().toISOString());
+                    }
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Address form handling
+        document.getElementById('addressForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Here you would typically send the address data to your backend
+            alert('Address saved successfully!');
+        });
+
+        // Sidebar Toggle
+        const navToggle = document.querySelector('.nav-toggle');
+        const sidebar = document.querySelector('.sidebar');
+        const closeSidebar = () => {
+            sidebar.classList.remove('active');
+        };
+
+        // Update profile link based on login status
+        function updateProfileLink() {
+            const profileLink = document.querySelector('.profile-link');
+            const userEmail = localStorage.getItem('userEmail');
+            
+            if (userEmail) {
+                // User is logged in
+                profileLink.href = 'Profile.html';
+                profileLink.querySelector('span').textContent = 'YOUR ACCOUNT';
+            } else {
+                // User is not logged in
+                profileLink.href = 'Login.html';
+                profileLink.querySelector('span').textContent = 'LOGIN / REGISTER';
+            }
+        }
+
+        navToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            navToggle.classList.toggle('active');
+        });
+
+        // Close sidebar when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!sidebar.contains(e.target) && !navToggle.contains(e.target)) {
+                closeSidebar();
+                navToggle.classList.remove('active');
+            }
+        });
+
+        // Close sidebar with ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeSidebar();
+                navToggle.classList.remove('active');
+            }
+        });
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            localStorage.removeItem('userEmail');
+            updateProfileLink();
+            window.location.href = 'Kaze.html';
+        });
+
+        // Save phone number when it changes
+        document.getElementById('phone').addEventListener('change', function() {
+            const userEmail = localStorage.getItem('userEmail');
+            if (userEmail) {
+                // Fix template literal syntax
+                localStorage.setItem(`phone_${userEmail}`, this.value);
+            }
+        });
+
+        function updateProfile(event) {
+            event.preventDefault();
+            
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser) {
+                window.location.href = 'Login.html';
+                return;
+            }
+
+            const newPhone = document.getElementById('phone').value;
+            const currentPhone = currentUser.phone;
+
+            // Validate phone number format
+            if (!isValidPhone(newPhone)) {
+                showError('Please enter a valid 10-digit phone number');
+                return;
+            }
+
+            // Check if the new phone number is already registered by another user
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const phoneExists = users.some(user => 
+                user.phone === newPhone && user.email !== currentUser.email
+            );
+
+            if (phoneExists) {
+                showError('Phone number already registered by another user');
+                return;
+            }
+
+            // Update user's phone number
+            const updatedUsers = users.map(user => {
+                if (user.email === currentUser.email) {
+                    return {
+                        ...user,
+                        phone: newPhone,
+                        lastUpdated: new Date().toISOString()
+                    };
+                }
+                return user;
+            });
+            // Update localStorage
+            localStorage.setItem('users', JSON.stringify(updatedUsers));
+            // Update current user
+            currentUser.phone = newPhone;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            // Update phone reference
+            localStorage.removeItem(`phone_${currentPhone}`);
+            localStorage.setItem(`phone_${newPhone}`, currentUser.email);
+            showSuccess('Phone number updated successfully');
+        }
+
+        function isValidPhone(phone) {
+            return /^\d{10}$/.test(phone);
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 3000);
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            setTimeout(() => {
+                successDiv.style.display = 'none';
+            }, 3000);
+        }
+
+        // Update cart count
+        function updateCartCount() {
+            const cartCount = document.querySelector('.cart-count');
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+            cartCount.textContent = totalItems;
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerHTML = `
+                <i class="fas fa-shopping-basket" style="color: white; margin-right: 10px;"></i>
+                <span>${message}</span>
+            `;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 2000);
+        }
+
+        // Wishlist functionality
+        const wishlistBtn = document.getElementById('wishlistBtn');
+        let wishlistItems = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+        // Initialize wishlist button state
+        if (wishlistItems.length > 0) {
+            wishlistBtn.classList.add('active');
+        }
+
+        // Redirect to wishlist page when clicked
+        wishlistBtn.addEventListener('click', () => {
+            window.location.href = 'wishlist.html';
+        });
+    </script>
+</body>
+</html>
