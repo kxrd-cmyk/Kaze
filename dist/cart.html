@@ -562,103 +562,38 @@
         </div>
     </section>
 
+    <script src="dist/main.js"></script>
     <script>
-        // Sidebar Toggle
-        const navToggle = document.querySelector('.nav-toggle');
-        const sidebar = document.querySelector('.sidebar');
-        const closeSidebar = () => {
-            sidebar.classList.remove('active');
-        };
+    window.addEventListener('DOMContentLoaded', () => {
+        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartItemsContainer = document.querySelector('.cart-items');
+        const cartTotal = document.querySelector('.cart-total-amount span:last-child');
+        if (!cartItemsContainer || !cartTotal) return;
 
-        navToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('active');
-            navToggle.classList.toggle('active');
-        });
-
-        // Close sidebar when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!sidebar.contains(e.target) && !navToggle.contains(e.target)) {
-                closeSidebar();
-                navToggle.classList.remove('active');
-            }
-        });
-
-        // Close sidebar with ESC key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeSidebar();
-                navToggle.classList.remove('active');
-            }
-        });
-
-        // Clear legacy cart data on page load
-        localStorage.removeItem('cart');
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
-
-        // Cart Functionality
-        const cartItems = document.querySelector('.cart-items');
-        const cartTotal = document.querySelector('.cart-total');
-
-        function updateQuantity(id, change) {
-            const item = cart.find(item => item.id === id);
-            if (item) {
-                const newQuantity = Math.max(1, item.quantity + change);
-                item.quantity = newQuantity;
-                localStorage.setItem('cart', JSON.stringify(cart));
-                updateCart();
-            }
+        if (cart.length === 0) {
+            cartItemsContainer.innerHTML = '<div>Your cart is empty.</div>';
+            cartTotal.textContent = '₹0.00';
+            return;
         }
 
-        function removeFromCart(id) {
-            cart = cart.filter(item => item.id !== id);
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCart();
-        }
-
-        function updateCart() {
-            if (cart.length === 0) {
-                cartItems.innerHTML = `
-                    <div class="empty-cart">
-                        Your cart is empty
-                        <br>
-                        <a href="kaze.html" class="continue-shopping">Continue Shopping</a>
+        let total = 0;
+        cartItemsContainer.innerHTML = cart.map(item => {
+            const price = parseFloat(item.price.replace(/[^0-9.]/g, ''));
+            const subtotal = price * item.quantity;
+            total += subtotal;
+            return `
+                <div class="cart-item">
+                    <img src="${item.image}" class="cart-item-image" />
+                    <div class="cart-item-details">
+                        <div class="cart-item-name">${item.name}</div>
+                        <div class="cart-item-quantity">Qty: ${item.quantity}</div>
+                        <div class="cart-item-price">₹${subtotal.toLocaleString()}</div>
                     </div>
-                `;
-                cartTotal.innerHTML = `<span>Total:</span><span>₹0.00</span>`;
-                return;
-            }
-
-            cartItems.innerHTML = cart.map(item => {
-                // Parse price in case it's a string with currency symbol
-                let price = typeof item.price === 'string' ? parseFloat(item.price.replace(/[^0-9.]/g, '')) : item.price;
-                const itemTotal = price * item.quantity;
-                return `
-                    <div class="cart-item">
-                        <button class="remove-item-btn" onclick="removeFromCart(${item.id})">×</button>
-                        <img src="${item.image}" alt="${item.name}" class="cart-item-image">
-                        <div class="cart-item-details">
-                            <h3 class="cart-item-name">${item.name}</h3>
-                            <p class="cart-item-price">₹${itemTotal.toLocaleString('en-IN')}</p>
-                            <div class="cart-item-quantity">
-                                <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
-                                <span>${item.quantity}</span>
-                                <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            // Calculate total using parsed price
-            const total = cart.reduce((sum, item) => {
-                let price = typeof item.price === 'string' ? parseFloat(item.price.replace(/[^0-9.]/g, '')) : item.price;
-                return sum + (price * item.quantity);
-            }, 0);
-            cartTotal.innerHTML = `<span>Total:</span><span>₹${total.toLocaleString('en-IN')}</span>`;
-        }
-
-        // Initialize cart
-        updateCart();
+                </div>
+            `;
+        }).join('');
+        cartTotal.textContent = `₹${total.toLocaleString()}`;
+    });
     </script>
 </body>
 </html> 
