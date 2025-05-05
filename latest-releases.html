@@ -457,12 +457,6 @@
             text-align: center;
         }
 
-        .cart-item-subtotal {
-            font-size: 1rem;
-            opacity: 0.8;
-            margin: 0;
-        }
-
         .cart-total {
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             padding-top: 20px;
@@ -785,13 +779,6 @@
             
             localStorage.setItem('cart', JSON.stringify(cart));
             updateCartCount();
-            
-            // Add button animation
-            const button = event.target.closest('.add-to-cart-btn');
-            button.classList.add('clicked');
-            setTimeout(() => {
-                button.classList.remove('clicked');
-            }, 1500);
         }
 
         function updateCartCount() {
@@ -802,12 +789,18 @@
 
         // Add to cart functionality
         document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-            button.addEventListener('click', (event) => {
-                event.stopPropagation();
+            button.innerHTML = '<span>ADD TO CART</span>';
+            button.addEventListener('click', () => {
                 const card = button.closest('.release-card');
                 const name = card.querySelector('.release-title').textContent;
-                const price = card.querySelector('.release-price').textContent;
+                const price = parseFloat(card.querySelector('.release-price').textContent.replace('₹', '').replace(',', ''));
                 const image = card.querySelector('.release-image').src;
+                
+                // Add button animation
+                button.classList.add('clicked');
+                setTimeout(() => {
+                    button.classList.remove('clicked');
+                }, 1500);
                 
                 addToCart(name, price, image);
             });
@@ -817,4 +810,4 @@
         updateCartCount();
     </script>
 </body>
-</html>
+</html> 
