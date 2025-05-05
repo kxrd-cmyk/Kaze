@@ -11,7 +11,7 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// Cookie helpers
+// Cookie-based cart logic with debug logging
 function setCookie(name, value, days = 7) {
     const expires = new Date(Date.now() + days * 864e5).toUTCString();
     document.cookie = name + '=' + encodeURIComponent(value) + '; expires=' + expires + '; path=/';
@@ -23,45 +23,38 @@ function getCookie(name) {
     }, '');
 }
 
-// Centralized Cart Management using cookies
-class CartManager {
-    constructor() {
-        this.cart = this.loadCart();
-    }
-
-    loadCart() {
-        try {
-            return JSON.parse(getCookie('cart')) || [];
-        } catch {
-            return [];
-        }
-    }
-
-    saveCart() {
-        setCookie('cart', JSON.stringify(this.cart));
-    }
-
-    addItem(product) {
-        const existingItem = this.cart.find(item => item.name === product.name);
-        if (existingItem) {
-            existingItem.quantity += 1;
-        } else {
-            this.cart.push({ ...product, quantity: 1 });
-        }
-        this.saveCart();
-        this.updateUI();
-    }
-
-    updateUI() {
-        const cartCount = document.querySelector('.cart-count');
-        if (cartCount) {
-            const totalItems = this.cart.reduce((sum, item) => sum + item.quantity, 0);
-            cartCount.textContent = totalItems;
-        }
+function getCart() {
+    try {
+        return JSON.parse(getCookie('cart')) || [];
+    } catch {
+        return [];
     }
 }
+function saveCart(cart) {
+    setCookie('cart', JSON.stringify(cart));
+}
 
-const cartManager = new CartManager();
+function addToCart(product) {
+    let cart = getCart();
+    const existing = cart.find(item => item.name === product.name);
+    if (existing) {
+        existing.quantity += 1;
+    } else {
+        cart.push({ ...product, quantity: 1 });
+    }
+    saveCart(cart);
+    updateCartCount();
+    console.log('Cart after add:', cart);
+}
+
+function updateCartCount() {
+    const cart = getCart();
+    const cartCount = document.querySelector('.cart-count');
+    if (cartCount) {
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartCount.textContent = totalItems;
+    }
+}
 
 window.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.add-to-cart-btn').forEach(button => {
@@ -72,13 +65,12 @@ window.addEventListener('DOMContentLoaded', () => {
             const name = card.querySelector('.release-title').textContent;
             const price = card.querySelector('.release-price').textContent;
             const image = card.querySelector('.release-image').src;
-            cartManager.addItem({ name, price, image });
-            // Add button animation
+            addToCart({ name, price, image });
             button.classList.add('clicked');
             setTimeout(() => {
                 button.classList.remove('clicked');
             }, 1500);
         });
     });
-    cartManager.updateUI();
+    updateCartCount();
 });
