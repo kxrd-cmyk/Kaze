@@ -904,6 +904,12 @@
 
         // Add to cart functionality
         document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+            // Remove any existing click listeners
+            button.replaceWith(button.cloneNode(true));
+        });
+
+        // Reattach single click listener
+        document.querySelectorAll('.add-to-cart-btn').forEach(button => {
             button.addEventListener('click', (event) => {
                 event.stopPropagation();
                 const card = button.closest('.release-card');

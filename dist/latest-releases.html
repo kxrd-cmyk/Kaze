@@ -789,18 +789,18 @@
 
         // Add to cart functionality
         document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-            button.innerHTML = '<span>ADD TO CART</span>';
-            button.addEventListener('click', () => {
+            // Remove any existing click listeners
+            button.replaceWith(button.cloneNode(true));
+        });
+
+        // Reattach single click listener
+        document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+            button.addEventListener('click', (event) => {
+                event.stopPropagation();
                 const card = button.closest('.release-card');
                 const name = card.querySelector('.release-title').textContent;
-                const price = parseFloat(card.querySelector('.release-price').textContent.replace('₹', '').replace(',', ''));
+                const price = card.querySelector('.release-price').textContent;
                 const image = card.querySelector('.release-image').src;
-                
-                // Add button animation
-                button.classList.add('clicked');
-                setTimeout(() => {
-                    button.classList.remove('clicked');
-                }, 1500);
                 
                 addToCart(name, price, image);
             });
