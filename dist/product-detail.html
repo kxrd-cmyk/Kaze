@@ -1459,12 +1459,16 @@
 
             const selectedSize = document.querySelector('.size-option.selected')?.dataset.size || 'M';
             const selectedColor = document.querySelector('.color-option.selected')?.dataset.color || 'Black';
-            const quantity = Math.max(1, parseInt(quantityValue.textContent));
+            let quantity = parseInt(quantityValue.textContent);
+            if (isNaN(quantity) || quantity < 1) quantity = 1;
+
+            // Parse price string to number (remove non-numeric chars except dot)
+            const parsedPrice = typeof product.price === 'string' ? parseFloat(product.price.replace(/[^0-9.]/g, '')) : product.price;
 
             const cartItem = {
                 id: Date.now(),
                 name: `${product.title} - ${selectedSize} - ${selectedColor}`,
-                price: parseFloat(product.price),
+                price: parsedPrice,
                 image: product.image,
                 quantity: quantity
             };
