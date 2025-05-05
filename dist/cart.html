@@ -564,8 +564,14 @@
 
     <script src="dist/main.js"></script>
     <script>
+    function getCookie(name) {
+        return document.cookie.split('; ').reduce((r, v) => {
+            const parts = v.split('=');
+            return parts[0] === name ? decodeURIComponent(parts[1]) : r;
+        }, '');
+    }
     window.addEventListener('DOMContentLoaded', () => {
-        const cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const cart = (() => { try { return JSON.parse(getCookie('cart')) || []; } catch { return []; } })();
         const cartItemsContainer = document.querySelector('.cart-items');
         const cartTotal = document.querySelector('.cart-total span:last-child');
         if (!cartItemsContainer || !cartTotal) return;
