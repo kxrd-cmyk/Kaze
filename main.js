@@ -11,10 +11,44 @@ if ('serviceWorker' in navigator) {
     });
 }
 
+// Helper functions
+function setCookie(name, value, days = 7) {
+    const expires = new Date(Date.now() + days * 864e5).toUTCString();
+    document.cookie = name + '=' + encodeURIComponent(value) + '; expires=' + expires + '; path=/';
+}
+function getCookie(name) {
+    return document.cookie.split('; ').reduce((r, v) => {
+        const parts = v.split('=');
+        return parts[0] === name ? decodeURIComponent(parts[1]) : r;
+    }, '');
+}
+
 // Centralized Cart Management
 class CartManager {
     constructor() {
-        this.cart = JSON.parse(localStorage.getItem('cart')) || [];
+        this.cart = this.loadCart();
+    }
+
+    loadCart() {
+        try {
+            // Try localStorage first
+            const local = localStorage.getItem('cart');
+            if (local) return JSON.parse(local);
+        } catch {}
+        // Fallback to cookies
+        try {
+            return JSON.parse(getCookie('cart')) || [];
+        } catch {
+            return [];
+        }
+    }
+
+    saveCart() {
+        const cartString = JSON.stringify(this.cart);
+        try {
+            localStorage.setItem('cart', cartString);
+        } catch {}
+        setCookie('cart', cartString);
     }
 
     addItem(product) {
@@ -26,10 +60,6 @@ class CartManager {
         }
         this.saveCart();
         this.updateUI();
-    }
-
-    saveCart() {
-        localStorage.setItem('cart', JSON.stringify(this.cart));
     }
 
     updateUI() {
