@@ -3,6 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Shop Kaze's premium streetwear collection. View detailed product information, reviews, and add items to your cart.">
+    <meta name="keywords" content="Kaze, streetwear, fashion, clothing, t-shirts, hoodies, urban fashion, premium clothing, fashion brand, product details">
+    <meta name="author" content="Kaze">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://kaze.com/product-detail.html">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="product">
+    <meta property="og:url" content="https://kaze.com/product-detail.html">
+    <meta property="og:title" content="KAZE | Product Detail">
+    <meta property="og:description" content="Shop Kaze's premium streetwear collection. View detailed product information and reviews.">
+    <meta property="og:image" content="https://kaze.com/images/kaze-product.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://kaze.com/product-detail.html">
+    <meta property="twitter:title" content="KAZE | Product Detail">
+    <meta property="twitter:description" content="Shop Kaze's premium streetwear collection. View detailed product information and reviews.">
+    <meta property="twitter:image" content="https://kaze.com/images/kaze-product.jpg">
+    
     <title>KAZE | Product Detail</title>
     <style>
         @font-face {
@@ -914,9 +934,9 @@
     <nav class="sidebar">
         <div class="nav-category">CATEGORIES</div>
         <ul class="nav-links">
-            <li><a href="Mens.html">MENS</a></li>
-            <li><a href="Womens.html">WOMENS</a></li>
-            <li><a href="Latest-Releases.html">LATEST RELEASES</a></li>
+            <li><a href="mens.html">MENS</a></li>
+            <li><a href="womens.html">WOMENS</a></li>
+            <li><a href="latest-releases.html">LATEST RELEASES</a></li>
         </ul>
         <a href="login.html" class="profile-link">
             <div class="profile-icon">👤</div>
@@ -928,10 +948,6 @@
         🛒
         <span class="cart-count">0</span>
     </div>
-
-    <button class="back-btn" onclick="history.back()">
-        ← BACK
-    </button>
 
     <section class="product-detail">
         <div class="container">
@@ -1155,7 +1171,7 @@
             <div class="footer-section">
                 <h3>ABOUT US</h3>
                 <p>Kaze is a premium fashion brand that challenges conventional design boundaries.</p>
-                <p><a href="ABOUTUS.HTML">Learn more about our story</a></p>
+                <p><a href="aboutus.html">Learn more about our story</a></p>
             </div>
         </div>
         <div class="footer-bottom">
@@ -1435,43 +1451,42 @@
             quantityValue.textContent = quantity + 1;
         });
 
-        function addToCart(name, price, image) {
-            const existingItem = cart.find(item => item.name === name);
-            
-            if (existingItem) {
-                existingItem.quantity += 1;
+        // Add to cart functionality
+        const addToCartBtn = document.getElementById('add-to-cart');
+        addToCartBtn.addEventListener('click', () => {
+            const product = products[productId];
+            if (!product) return;
+
+            const selectedSize = document.querySelector('.size-option.selected')?.dataset.size || 'M';
+            const selectedColor = document.querySelector('.color-option.selected')?.dataset.color || 'Black';
+            const quantity = parseInt(quantityValue.textContent);
+
+            const cartItem = {
+                id: Date.now(),
+                name: `${product.title} - ${selectedSize} - ${selectedColor}`,
+                price: product.price,
+                image: product.image,
+                quantity: quantity
+            };
+
+            const existingItemIndex = cart.findIndex(item => 
+                item.name === cartItem.name
+            );
+
+            if (existingItemIndex !== -1) {
+                cart[existingItemIndex].quantity += quantity;
             } else {
-                cart.push({
-                    id: Date.now(),
-                    name,
-                    price,
-                    image,
-                    quantity: 1
-                });
+                cart.push(cartItem);
             }
-            
+
             localStorage.setItem('cart', JSON.stringify(cart));
             updateCartCount();
-            
-            // Add button animation
-            const button = event.target.closest('.add-to-cart-btn');
-            button.classList.add('clicked');
-            setTimeout(() => {
-                button.classList.remove('clicked');
-            }, 1500);
-        }
 
-        // Add to cart functionality
-        document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-            button.addEventListener('click', (event) => {
-                event.stopPropagation();
-                const card = button.closest('.product-card');
-                const name = card.querySelector('.product-title').textContent;
-                const price = card.querySelector('.product-price').textContent;
-                const image = card.querySelector('.product-image').src;
-                
-                addToCart(name, price, image);
-            });
+            // Show success message
+            addToCartBtn.textContent = 'ADDED TO CART!';
+            setTimeout(() => {
+                addToCartBtn.textContent = 'ADD TO CART';
+            }, 2000);
         });
 
         // Load product data when page loads

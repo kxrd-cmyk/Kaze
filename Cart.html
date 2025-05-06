@@ -43,7 +43,6 @@
             transition: transform 0.3s ease;
             font-family: 'Hellshunx', sans-serif;
             font-weight: 25;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
         }
 
         .logo:hover {
@@ -300,12 +299,6 @@
             text-align: center;
         }
 
-        .cart-item-subtotal {
-            font-size: 1.2rem;
-            opacity: 0.8;
-            margin: 0;
-        }
-
         .cart-summary {
             background: rgba(0, 0, 0, 0.3);
             border-radius: 20px;
@@ -497,6 +490,92 @@
             }
         }
 
+        /* Cart Preview */
+        .cart-preview {
+            position: fixed;
+            top: 80px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            width: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .cart-preview.active {
+            display: block;
+        }
+
+        .preview-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .preview-item:last-child {
+            border-bottom: none;
+        }
+
+        .preview-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .preview-details {
+            flex-grow: 1;
+        }
+
+        .preview-name {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .preview-price {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .preview-quantity {
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+
+        .preview-total {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.1rem;
+        }
+
+        .view-cart-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: white;
+            color: black;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 8px;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .view-cart-btn:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-2px);
+        }
+
         @media (max-width: 768px) {
             .cart-item {
                 flex-direction: column;
@@ -511,6 +590,11 @@
             .remove-item-btn {
                 top: 10px;
                 right: 10px;
+            }
+
+            .cart-preview {
+                width: 90%;
+                right: 5%;
             }
         }
     </style>
@@ -536,9 +620,9 @@
     <nav class="sidebar">
         <div class="nav-category">CATEGORIES</div>
         <ul class="nav-links">
-            <li><a href="Mens.html">MENS</a></li>
-            <li><a href="Womens.html">WOMENS</a></li>
-            <li><a href="Latest-Releases.html">LATEST RELEASES</a></li>
+            <li><a href="mens.html">MENS</a></li>
+            <li><a href="womens.html">WOMENS</a></li>
+            <li><a href="latest-releases.html">LATEST RELEASES</a></li>
         </ul>
         <a href="login.html" class="profile-link">
             <div class="profile-icon">👤</div>
@@ -602,45 +686,8 @@
         const cartTotal = document.querySelector('.cart-total');
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-        function updateCart() {
-            if (cart.length === 0) {
-                cartItems.innerHTML = `
-                    <div class="empty-cart">
-                        Your cart is empty
-                        <br>
-                        <a href="kaze.html" class="continue-shopping">Continue Shopping</a>
-                    </div>
-                `;
-                document.querySelector('.cart-total').textContent = '₹0.00';
-                return;
-            }
-
-            cartItems.innerHTML = cart.map(item => `
-                <div class="cart-item">
-                    <button class="remove-item-btn" onclick="removeFromCart(${item.id})">×</button>
-                    <img src="${item.image}" alt="${item.name}" class="cart-item-image">
-                    <div class="cart-item-details">
-                        <h3 class="cart-item-name">${item.name}</h3>
-                        <div class="cart-item-quantity">
-                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
-                            <span class="quantity-value" id="quantity-${item.id}">${item.quantity}</span>
-                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
-                        </div>
-                        <p class="cart-item-subtotal">₹${(parseFloat(item.price.replace(/[^0-9.]/g, '')) * item.quantity).toFixed(2)}</p>
-                    </div>
-                </div>
-            `).join('');
-
-            const total = cart.reduce((sum, item) => {
-                const price = parseFloat(item.price.replace(/[^0-9.]/g, ''));
-                return sum + (price * item.quantity);
-            }, 0);
-            
-            document.querySelector('.cart-total').textContent = `₹${total.toFixed(2)}`;
-        }
-
-        function updateQuantity(itemId, change) {
-            const item = cart.find(item => item.id === itemId);
+        function updateQuantity(id, change) {
+            const item = cart.find(item => item.id === id);
             if (item) {
                 item.quantity = Math.max(1, item.quantity + change);
                 localStorage.setItem('cart', JSON.stringify(cart));
@@ -652,6 +699,39 @@
             cart = cart.filter(item => item.id !== id);
             localStorage.setItem('cart', JSON.stringify(cart));
             updateCart();
+        }
+
+        function updateCart() {
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="empty-cart">
+                        Your cart is empty
+                        <br>
+                        <a href="kaze.html" class="continue-shopping">Continue Shopping</a>
+                    </div>
+                `;
+                cartTotal.innerHTML = `<span>Total:</span><span>₹0.00</span>`;
+                return;
+            }
+
+            cartItems.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <button class="remove-item-btn" onclick="removeFromCart(${item.id})">×</button>
+                    <img src="${item.image}" alt="${item.name}" class="cart-item-image">
+                    <div class="cart-item-details">
+                        <h3 class="cart-item-name">${item.name}</h3>
+                        <p class="cart-item-price">₹${item.price.toLocaleString('en-IN')}</p>
+                        <div class="cart-item-quantity">
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                            <span>${item.quantity}</span>
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            cartTotal.innerHTML = `<span>Total:</span><span>₹${total.toLocaleString('en-IN')}</span>`;
         }
 
         // Initialize cart
