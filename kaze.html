@@ -1,0 +1,1908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#000000">
+    <title>KAZE | Embrace the Chaos</title>
+    <style>
+        @font-face {
+            font-family: 'Hellshunx';
+            src: url('./fonts/Hellshunx.ttf') format('truetype');
+            font-weight: lighter;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        /* Prevent body scrolling when sidebar is open */
+        body.sidebar-open {
+            overflow: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header and Logo */
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-container {
+            text-align: center;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 8rem;
+            letter-spacing: 6px;
+            margin-bottom: 0;
+            position: relative;
+            animation: fadeIn 2s ease-in-out;
+            transition: transform 0.3s ease;
+            font-family: 'Hellshunx', sans-serif;
+            font-weight: 100;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5),
+                         0 0 40px rgba(255, 255, 255, 0.3),
+                         0 0 60px rgba(255, 255, 255, 0.2);
+        }
+
+        .k-symbol {
+            width: 300px;
+            height: 300px;
+            margin: 20px 0;
+            opacity: 0;
+            animation: fadeIn 2s ease-in-out forwards;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .k-symbol img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: invert(1);
+        }
+
+        .slogan {
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            opacity: 0;
+            animation: fadeIn 2s ease-in-out 1s forwards;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            animation: fadeIn 2s ease-in-out 2s forwards;
+        }
+
+        .scroll-text {
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .scroll-arrow {
+            width: 20px;
+            height: 20px;
+            border-right: 2px solid #fff;
+            border-bottom: 2px solid #fff;
+            transform: rotate(45deg);
+            animation: bounce 2s infinite;
+        }
+
+        /* Background Animation */
+        .background-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: #000;
+            overflow: hidden;
+        }
+
+        .background-animation::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center,
+                rgba(255, 255, 255, 0.1) 0%,
+                rgba(255, 255, 255, 0.05) 20%,
+                rgba(255, 255, 255, 0.02) 40%,
+                transparent 70%
+            );
+            animation: pulseGlow 4s ease-in-out infinite;
+        }
+
+        .spiral-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        .spiral-path {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.1);
+            stroke-width: 1;
+            stroke-dasharray: 5,5;
+            animation: dash 20s linear infinite;
+        }
+
+        .neon-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+            width: 100%;
+            height: 100%;
+        }
+
+        .neon-ring::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .neon-ring::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            animation: echo 4s ease-out infinite;
+        }
+
+        .neon-ring:nth-child(1) {
+            width: 200px;
+            height: 200px;
+            animation: rotate 20s linear infinite;
+        }
+
+        .neon-ring:nth-child(2) {
+            width: 324px;
+            height: 324px;
+            animation: rotate 15s linear infinite reverse;
+        }
+
+        .neon-ring:nth-child(3) {
+            width: 524px;
+            height: 524px;
+            animation: rotate 25s linear infinite;
+        }
+
+        .neon-ring:nth-child(4) {
+            width: 848px;
+            height: 848px;
+            animation: rotate 18s linear infinite reverse;
+        }
+
+        .neon-ring:nth-child(5) {
+            width: 1372px;
+            height: 1372px;
+            animation: rotate 22s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.5;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes echo {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes dash {
+            to {
+                stroke-dashoffset: 1000;
+            }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 0.8;
+            }
+        }
+
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(1px);
+        }
+
+        /* Products Section */
+        .products-section {
+            padding: 100px 0;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .products-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 60px;
+            letter-spacing: 3px;
+        }
+
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto 40px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            position: relative;
+            z-index: 1001;
+        }
+
+        .search-container.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .search-container.floating {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 998;
+            margin: 0;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        .search-box {
+            position: relative;
+            width: 300px;
+            margin: 0 auto;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px 20px;
+            padding-right: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            color: white;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .search-box input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            pointer-events: none;
+            filter: brightness(0) invert(1);
+        }
+
+        .search-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            margin-top: 10px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1002;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .search-dropdown a {
+            display: block;
+            padding: 15px 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .search-dropdown a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .search-dropdown a:first-child {
+            border-radius: 12px 12px 0 0;
+        }
+
+        .search-dropdown a:last-child {
+            border-radius: 0 0 12px 12px;
+        }
+
+        .products-grid {
+            display: none; /* Hide the old grid */
+        }
+
+        /* Carousel Styles */
+        .carousel-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 20px;
+            z-index: 1000;
+        }
+
+        .carousel {
+            display: flex;
+            transition: transform 0.5s ease;
+            height: 600px;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-link {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            cursor: pointer;
+        }
+
+        .carousel-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 40px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            color: white;
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .carousel-title {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .carousel-price {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .carousel-controls {
+            display: none;
+        }
+
+        .carousel-btn {
+            display: none;
+        }
+
+        .carousel-dots {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 2;
+        }
+
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-dot.active {
+            background: white;
+            transform: scale(1.2);
+        }
+
+        .add-to-cart-btn {
+            position: relative;
+            background: black;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 0.9rem;
+            border-radius: 12px;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+            z-index: 2;
+            backdrop-filter: blur(5px);
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .add-to-cart-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .add-to-cart-btn.clicked {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(0.95);
+        }
+
+        .add-to-cart-btn::after {
+            content: 'ADDED!';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .add-to-cart-btn.clicked::after {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        .add-to-cart-btn.clicked span {
+            opacity: 0;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0) rotate(45deg);
+            }
+            40% {
+                transform: translateY(-20px) rotate(45deg);
+            }
+            60% {
+                transform: translateY(-10px) rotate(45deg);
+            }
+        }
+
+        @keyframes floatLogo {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 5rem;
+            }
+
+            .slogan {
+                font-size: 1.2rem;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #000;
+            color: #fff;
+            padding: 40px 0 20px;
+            margin-top: 60px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            padding: 0 20px;
+        }
+
+        .footer-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .footer-section p {
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .footer-section a {
+            color: #fff;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            opacity: 0.7;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-bottom p {
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+
+        /* Navigation Sidebar - Fixed Version */
+        .nav-toggle {
+            position: fixed;
+            left: 30px;
+            top: 30px;
+            z-index: 1000;
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-toggle span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: white;
+            transition: all 0.3s ease;
+        }
+
+        .nav-toggle.active span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+
+        .nav-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .nav-toggle.active span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        .sidebar {
+            position: fixed;
+            left: -300px;
+            top: 0;
+            width: 300px;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 999;
+            padding: 100px 40px 0;
+            transition: left 0.3s ease;
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .nav-links {
+            list-style: none;
+            flex-grow: 1;
+            margin-bottom: 20px;
+        }
+
+        .nav-links:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .profile-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            padding: 20px 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.95);
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .profile-link:hover {
+            opacity: 1;
+            transform: translateY(-2px);
+        }
+
+        .profile-icon {
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-links li {
+            margin-bottom: 30px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            display: block;
+            padding: 10px 0;
+            opacity: 0.7;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+            transform: translateX(5px);
+        }
+
+        .nav-category {
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 15px;
+            margin-top: 20px;
+        }
+
+        .nav-category:first-child {
+            margin-top: 0;
+        }
+
+        .nav-category:nth-child(3) {
+            margin-top: 5px;
+        }
+
+        .nav-links {
+            list-style: none;
+            flex-grow: 1;
+            margin-bottom: 10px;
+        }
+
+        .nav-links:last-of-type {
+            margin-bottom: 0;
+        }
+
+        /* Cart Styles */
+        .cart-icon {
+            position: fixed;
+            right: 30px;
+            top: 30px;
+            z-index: 1000;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: white;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            filter: brightness(0) invert(1);
+        }
+
+        .profile-icon-top {
+            position: fixed;
+            right: 30px;
+            top: 80px;
+            z-index: 1000;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: white;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .profile-icon-top:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .cart-preview {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            width: 300px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+
+        .cart-icon:hover .cart-preview {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .cart-preview-items {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .cart-preview-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .cart-preview-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-preview-image {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cart-preview-details {
+            flex-grow: 1;
+        }
+
+        .cart-preview-name {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        .cart-preview-price {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        .cart-preview-total {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            letter-spacing: 1px;
+        }
+
+        .cart-preview-empty {
+            text-align: center;
+            padding: 20px 0;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            letter-spacing: 1px;
+        }
+
+        .cart-preview-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: black;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .cart-preview-btn:hover {
+            background: rgba(0, 0, 0, 0.8);
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .cart-sidebar {
+            position: fixed;
+            right: -400px;
+            top: 0;
+            width: 400px;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 999;
+            padding: 80px 40px;
+            transition: right 0.3s ease;
+            backdrop-filter: blur(10px);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cart-sidebar.active {
+            right: 0;
+        }
+
+        .cart-title {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+        }
+
+        .cart-items {
+            max-height: calc(100vh - 250px);
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .cart-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .cart-item-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .cart-item:hover .cart-item-image {
+            transform: scale(1.05);
+        }
+
+        .cart-item-details {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .cart-item-name {
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+
+        .cart-item-price {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin: 0;
+        }
+
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 5px;
+        }
+
+        .quantity-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .quantity-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .cart-item-quantity span {
+            font-size: 1rem;
+            min-width: 30px;
+            text-align: center;
+        }
+
+        .cart-total {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 30px 40px;
+            background: rgba(0, 0, 0, 0.8);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .cart-total-amount {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 15px;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkout-btn:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-2px);
+        }
+
+        .latest-releases {
+            padding: 100px 0;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .releases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .release-card {
+            position: relative;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .product-link {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            cursor: pointer;
+        }
+
+        .release-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .release-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .release-card:hover .release-image {
+            transform: scale(1.05);
+        }
+
+        .release-info {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .release-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .release-price {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+
+        .release-card .add-to-cart-btn {
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .release-card:hover .add-to-cart-btn {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+            .releases-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 30px;
+            }
+
+            .release-image {
+                height: 300px;
+            }
+        }
+
+        /* 3D Elements */
+        .interactive-3d-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            perspective: 1000px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .interactive-3d-element {
+            width: 300px;
+            height: 300px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease-out;
+        }
+
+        .interactive-3d-element img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .product-card-3d {
+            width: 250px;
+            height: 350px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+            cursor: pointer;
+        }
+
+        .product-card-3d:hover {
+            transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
+        }
+
+        .product-card-3d .front,
+        .product-card-3d .back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .product-card-3d .front {
+            background: rgba(0, 0, 0, 0.8);
+            transform: rotateY(0deg);
+        }
+
+        .product-card-3d .back {
+            background: rgba(0, 0, 0, 0.9);
+            transform: rotateY(180deg);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .product-card-3d:hover .front {
+            transform: rotateY(180deg);
+        }
+
+        .product-card-3d:hover .back {
+            transform: rotateY(0deg);
+        }
+
+        .product-card-3d img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .product-card-3d h3 {
+            color: white;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .product-card-3d p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            text-align: center;
+        }
+    </style>
+    <link rel="preload" href="./fonts/Hellshunx.ttf" as="font" type="font/ttf" crossorigin>
+</head>
+<body>
+    <button class="nav-toggle" onclick="toggleSidebar()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    
+    <button class="cart-icon" onclick="window.location.href='cart.html'">
+        🛒
+    </button>
+    
+    <nav class="sidebar">
+        <div class="nav-category">CATEGORIES</div>
+        <ul class="nav-links">
+            <li><a href="mens.html">MENS</a></li>
+            <li><a href="womens.html">WOMENS</a></li>
+            <li><a href="latest-releases.html">LATEST RELEASES</a></li>
+        </ul>
+        
+        <!-- Account section moved to bottom of sidebar -->
+        <div style="margin-top: auto;">
+            <div class="nav-category">ACCOUNT</div>
+            <ul class="nav-links" id="account-links">
+                <!-- This content will be dynamically populated based on login status -->
+                <li><a href="login.html" id="login-register-link">LOGIN / REGISTER</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="cart-sidebar">
+        <h2 class="cart-title">YOUR CART</h2>
+        <div class="cart-items">
+            <!-- Cart items will be dynamically added here -->
+        </div>
+        <div class="cart-total">
+            <div class="cart-total-amount">
+                <span>Total:</span>
+                <span>₹0.00</span>
+            </div>
+            <button class="checkout-btn">CHECKOUT</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="background-animation" id="particles">
+            <div class="spiral-container">
+                <svg viewBox="-1000 -1000 2000 2000">
+                    <path class="spiral-path" id="spiralPath" d=""></path>
+                </svg>
+            </div>
+            <div class="neon-ring"></div>
+            <div class="neon-ring"></div>
+            <div class="neon-ring"></div>
+            <div class="neon-ring"></div>
+            <div class="neon-ring"></div>
+        </div>
+        <div class="logo-container">
+            <h1 class="logo" id="logo">Kaze</h1>
+            <p class="slogan">EMBRACE THE CHAOS</p>
+        </div>
+        <div class="scroll-indicator">
+            <span class="scroll-text">SCROLL</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </header>
+
+    <section class="products-section" id="products">
+        <div class="container">
+            <h2 class="section-title">COLLECTION</h2>
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" placeholder="SEARCH PRODUCTS..." id="searchInput">
+                    <div class="search-icon">🔍</div>
+                    <div class="search-dropdown">
+                        <a href="mens.html">MENS</a>
+                        <a href="womens.html">WOMENS</a>
+                        <a href="latest-releases.html">LATEST RELEASES</a>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-container">
+                <div class="carousel">
+                    <div class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="KAZE Hoodie" class="carousel-image">
+                        <div class="carousel-info">
+                            <h3 class="carousel-title">KAZE ESSENTIAL HOODIE</h3>
+                            <p class="carousel-price">₹2,700</p>
+                        </div>
+                        <a href="product-detail.html?product=kaze-essential-hoodie" class="product-link"></a>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="KAZE T-Shirt" class="carousel-image">
+                        <div class="carousel-info">
+                            <h3 class="carousel-title">KAZE GRAPHIC TEE</h3>
+                            <p class="carousel-price">₹1,200</p>
+                        </div>
+                        <a href="product-detail.html?product=kaze-graphic-tee" class="product-link"></a>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1591195853828-11db59a44f6b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="KAZE Pants" class="carousel-image">
+                        <div class="carousel-info">
+                            <h3 class="carousel-title">KAZE CARGO PANTS</h3>
+                            <p class="carousel-price">₹1,500</p>
+                        </div>
+                        <a href="product-detail.html?product=kaze-latest-pants" class="product-link"></a>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="KAZE Jacket" class="carousel-image">
+                        <div class="carousel-info">
+                            <h3 class="carousel-title">KAZE BOMBER JACKET</h3>
+                            <p class="carousel-price">₹2,700</p>
+                        </div>
+                        <a href="product-detail.html?product=kaze-bomber-jacket" class="product-link"></a>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1607522370275-f14206abe5d3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=85" alt="KAZE Minimal Sneakers" class="carousel-image">
+                        <div class="carousel-info">
+                            <h3 class="carousel-title">KAZE MINIMAL SNEAKERS</h3>
+                            <p class="carousel-price">₹4,200</p>
+                        </div>
+                        <a href="product-detail.html?product=kaze-sneakers" class="product-link"></a>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1525171254930-643fc658b64e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=85" alt="KAZE Crossbody Bag" class="carousel-image">
+                        <div class="carousel-info">
+                            <h3 class="carousel-title">KAZE CROSSBODY BAG</h3>
+                            <p class="carousel-price">₹3,500</p>
+                        </div>
+                        <a href="product-detail.html?product=kaze-crossbody-bag" class="product-link"></a>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1551537482-f2075a1d41f2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=85" alt="KAZE Varsity Jacket" class="carousel-image">
+                        <div class="carousel-info">
+                            <h3 class="carousel-title">KAZE VARSITY JACKET</h3>
+                            <p class="carousel-price">₹5,200</p>
+                        </div>
+                        <a href="product-detail.html?product=kaze-varsity-jacket" class="product-link"></a>
+                    </div>
+                    <div class="carousel-slide">
+                        <img src="https://images.unsplash.com/photo-1562157873-818bc0726f68?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=85" alt="KAZE Striped Tee" class="carousel-image">
+                        <div class="carousel-info">
+                            <h3 class="carousel-title">KAZE STRIPED TEE</h3>
+                            <p class="carousel-price">₹1,200</p>
+                        </div>
+                        <a href="product-detail.html?product=kaze-striped-tee" class="product-link"></a>
+                    </div>
+                </div>
+                <div class="carousel-dots"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="latest-releases">
+        <div class="container">
+            <h2 class="section-title">LATEST RELEASES</h2>
+            <div class="releases-grid">
+                <div class="release-card">
+                    <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="KAZE Hoodie" class="release-image">
+                    <div class="release-info">
+                        <h3 class="release-title">KAZE ESSENTIAL HOODIE</h3>
+                        <p class="release-price">₹2,500</p>
+                    </div>
+                    <a href="product-detail.html?product=kaze-essential-hoodie" class="product-link"></a>
+                </div>
+                <div class="release-card">
+                    <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="KAZE T-Shirt" class="release-image">
+                    <div class="release-info">
+                        <h3 class="release-title">KAZE GRAPHIC TEE</h3>
+                        <p class="release-price">₹1,000</p>
+                    </div>
+                    <a href="product-detail.html?product=kaze-graphic-tee" class="product-link"></a>
+                </div>
+                <div class="release-card">
+                    <img src="https://images.unsplash.com/photo-1591195853828-11db59a44f6b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="KAZE Pants" class="release-image">
+                    <div class="release-info">
+                        <h3 class="release-title">KAZE CARGO PANTS</h3>
+                        <p class="release-price">₹1,500</p>
+                    </div>
+                    <a href="product-detail.html?product=kaze-latest-pants" class="product-link"></a>
+                </div>
+                <div class="release-card">
+                    <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="KAZE Jacket" class="release-image">
+                    <div class="release-info">
+                        <h3 class="release-title">KAZE BOMBER JACKET</h3>
+                        <p class="release-price">₹2,700</p>
+                    </div>
+                    <a href="product-detail.html?product=kaze-bomber-jacket" class="product-link"></a>
+                </div>
+                <div class="release-card">
+                    <img src="https://images.unsplash.com/photo-1607522370275-f14206abe5d3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=85" alt="KAZE Minimal Sneakers" class="release-image">
+                    <div class="release-info">
+                        <h3 class="release-title">KAZE MINIMAL SNEAKERS</h3>
+                        <p class="release-price">₹4,200</p>
+                    </div>
+                    <a href="product-detail.html?product=kaze-sneakers" class="product-link"></a>
+                </div>
+                <div class="release-card">
+                    <img src="https://images.unsplash.com/photo-1525171254930-643fc658b64e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=85" alt="KAZE Crossbody Bag" class="release-image">
+                    <div class="release-info">
+                        <h3 class="release-title">KAZE CROSSBODY BAG</h3>
+                        <p class="release-price">₹3,500</p>
+                    </div>
+                    <a href="product-detail.html?product=kaze-crossbody-bag" class="product-link"></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>CONTACT US</h3>
+                <p>1234 Street Name</p>
+                <p>City, State 12345</p>
+                <p>United States</p>
+                <p>Phone: (555) 123-4567</p>
+            </div>
+            <div class="footer-section">
+                <h3>EMAIL</h3>
+                <p><a href="mailto:info@kaze.com">info@kaze.com</a></p>
+                <p><a href="mailto:support@kaze.com">support@kaze.com</a></p>
+                <p><a href="mailto:wholesale@kaze.com">wholesale@kaze.com</a></p>
+            </div>
+            <div class="footer-section">
+                <h3>ABOUT US</h3>
+                <p>Kaze is a premium fashion brand that challenges conventional design boundaries.</p>
+                <p><a href="aboutus.html">Learn more about our story</a></p>
+            </div>
+            <div class="footer-section">
+                <h3>LINKS</h3>
+                <p><a href="faq.html">FAQ</a></p>
+                <p><a href="aboutus.html">About Us</a></p>
+                <p><a href="login.html">Login</a></p>
+                <p><a href="register.html">Register</a></p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 KAZE. All rights reserved. | Embrace the Chaos</p>
+        </div>
+    </footer>
+
+    <!-- Load the main.js file for sidebar functionality -->
+    <script src="./js/main.js"></script>
+    
+    <script>
+        // Create Spiral Path
+        function createSpiralPath() {
+            const path = document.getElementById('spiralPath');
+            const rings = document.querySelectorAll('.neon-ring');
+            const centerX = 0;
+            const centerY = 0;
+            let pathData = '';
+            
+            // Get the sizes of all rings
+            const sizes = Array.from(rings).map(ring => {
+                const style = window.getComputedStyle(ring);
+                return parseFloat(style.width);
+            });
+
+            // Create complete circles
+            for (let i = 0; i < sizes.length; i++) {
+                const radius = sizes[i] / 2;
+                
+                // Create a complete circle
+                if (i === 0) {
+                    pathData += `M ${-radius} 0`;
+                }
+                pathData += ` A ${radius} ${radius} 0 1 1 ${radius} 0`;
+                pathData += ` A ${radius} ${radius} 0 1 1 ${-radius} 0`;
+            }
+            
+            path.setAttribute('d', pathData);
+        }
+
+        // Logo Interaction
+        const logo = document.getElementById('logo');
+        const logoContainer = document.querySelector('.logo-container');
+
+        logoContainer.addEventListener('mousemove', (e) => {
+            const rect = logoContainer.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // Calculate rotation based on cursor position
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = (y - centerY) / 20;
+            const rotateY = (centerX - x) / 20;
+            
+            // Add the floating animation to the transform
+            const currentY = parseFloat(getComputedStyle(logo).transform.split(',')[5]) || 0;
+            logo.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(${currentY}px)`;
+        });
+
+        // Reset logo position when mouse leaves
+        logoContainer.addEventListener('mouseleave', () => {
+            const currentY = parseFloat(getComputedStyle(logo).transform.split(',')[5]) || 0;
+            logo.style.transform = `perspective(1000px) rotateX(0) rotateY(0) translateY(${currentY}px)`;
+        });
+
+        // Scroll Animation
+        function handleScroll() {
+            const productsSection = document.getElementById('products');
+            const searchContainer = document.querySelector('.search-container');
+            const scrollPosition = window.scrollY;
+            const productsSectionTop = productsSection.offsetTop;
+            
+            // Show products section when scrolled into view
+            if (scrollPosition > window.innerHeight * 0.5) {
+                productsSection.classList.add('visible');
+                searchContainer.classList.add('visible');
+            }
+
+            // Make search bar float when scrolled past the products section
+            if (scrollPosition > productsSectionTop + 100) {
+                searchContainer.classList.add('floating');
+            } else {
+                searchContainer.classList.remove('floating');
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            createSpiralPath();
+            window.addEventListener('scroll', handleScroll);
+            handleScroll();
+        });
+
+        // Cart functionality
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartPreviewItems = document.querySelector('.cart-preview-items');
+        const cartPreviewEmpty = document.querySelector('.cart-preview-empty');
+        const cartPreviewTotal = document.querySelector('.cart-preview-total');
+
+        function updateCartPreview() {
+            if (cart.length === 0) {
+                cartPreviewEmpty.style.display = 'block';
+                cartPreviewTotal.style.display = 'none';
+                return;
+            }
+            cartPreviewEmpty.style.display = 'none';
+            cartPreviewTotal.style.display = 'flex';
+            // Clear existing preview items
+            const existingItems = cartPreviewItems.querySelectorAll('.cart-preview-item');
+            existingItems.forEach(item => item.remove());
+            // Show all items in the cart
+            let total = 0;
+            cart.forEach(item => {
+                // Parse price in case it's a string with currency symbol
+                let price = typeof item.price === 'string' ? parseFloat(item.price.replace(/[^0-9.]/g, '')) : item.price;
+                total += price * item.quantity;
+                const previewItem = document.createElement('div');
+                previewItem.className = 'cart-preview-item';
+                previewItem.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="cart-preview-image">
+                    <div class="cart-preview-details">
+                        <div class="cart-preview-name">${item.name} <span style='opacity:0.7'>(x${item.quantity})</span></div>
+                    </div>
+                `;
+                cartPreviewItems.appendChild(previewItem);
+            });
+            // Update total
+            cartPreviewTotal.querySelector('span:last-child').textContent = `₹${total.toFixed(2)}`;
+        }
+
+        function addToCart(name, price, image) {
+            // Parse price in case it's a string with currency symbol
+            let parsedPrice = typeof price === 'string' ? parseFloat(price.replace(/[^0-9.]/g, '')) : price;
+            const existingItem = cart.find(item => item.name === name);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: Date.now(),
+                    name,
+                    price: parsedPrice,
+                    image,
+                    quantity: 1
+                });
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartPreview();
+        }
+
+        // Attach addToCart to all .add-to-cart-btn buttons
+        document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.stopPropagation();
+                let card = button.closest('.carousel-slide, .release-card');
+                let name = card.querySelector('.carousel-title, .release-title').textContent;
+                let price = card.querySelector('.carousel-price, .release-price').textContent;
+                let image = card.querySelector('.carousel-image, .release-image').src;
+                addToCart(name, price, image);
+                button.classList.add('clicked');
+                setTimeout(() => {
+                    button.classList.remove('clicked');
+                }, 1500);
+            });
+        });
+
+        // Initial cart preview update
+        updateCartPreview();
+
+        // Cart icon click redirects to cart.html
+        const cartIcon = document.querySelector('.cart-icon');
+        if (cartIcon) {
+            cartIcon.addEventListener('click', function() {
+                window.location.href = 'cart.html';
+            });
+        }
+
+        // Search Box Functionality
+        const searchInput = document.getElementById('searchInput');
+        const searchDropdown = document.querySelector('.search-dropdown');
+
+        searchInput.addEventListener('focus', () => {
+            searchDropdown.classList.add('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
+                searchDropdown.classList.remove('active');
+            }
+        });
+
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                searchDropdown.classList.remove('active');
+            }
+        });
+
+        // Carousel functionality
+        const carousel = document.querySelector('.carousel');
+        const slides = document.querySelectorAll('.carousel-slide');
+        const dotsContainer = document.querySelector('.carousel-dots');
+        
+        let currentSlide = 0;
+        let autoScrollInterval;
+        const autoScrollDelay = 2000; // Changed from 3000 to 2000 (2 seconds)
+
+        // Create only one dot instead of one per slide
+        // We'll remove dots entirely to declutter the interface
+        dotsContainer.style.display = 'none';
+
+        function updateDots() {
+            // This function is kept for compatibility but won't do anything anymore
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+            resetAutoScroll();
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            goToSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            goToSlide(currentSlide);
+        }
+
+        function startAutoScroll() {
+            if (autoScrollInterval) {
+                clearInterval(autoScrollInterval);
+            }
+            autoScrollInterval = setInterval(() => {
+                nextSlide();
+            }, autoScrollDelay);
+        }
+
+        function resetAutoScroll() {
+            clearInterval(autoScrollInterval);
+            startAutoScroll();
+        }
+
+        // Keyboard controls for carousel
+        document.addEventListener('keydown', (e) => {
+            // Only handle keyboard events when carousel is in viewport
+            const carouselRect = carousel.getBoundingClientRect();
+            const isCarouselVisible = (
+                carouselRect.top < window.innerHeight &&
+                carouselRect.bottom > 0
+            );
+
+            if (isCarouselVisible) {
+                switch(e.key) {
+                    case 'ArrowLeft':
+                        prevSlide();
+                        resetAutoScroll();
+                        break;
+                    case 'ArrowRight':
+                        nextSlide();
+                        resetAutoScroll();
+                        break;
+                    case ' ': // Spacebar
+                        e.preventDefault(); // Prevent page scroll
+                        nextSlide();
+                        resetAutoScroll();
+                        break;
+                }
+            }
+        });
+
+        // Pause auto-scroll when hovering over carousel
+        carousel.addEventListener('mouseenter', () => clearInterval(autoScrollInterval));
+        carousel.addEventListener('mouseleave', startAutoScroll);
+
+        // Add touch support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        carousel.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            clearInterval(autoScrollInterval);
+        }, { passive: true });
+        
+        carousel.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+            startAutoScroll();
+        }, { passive: true });
+        
+        function handleSwipe() {
+            const threshold = 50; // minimum distance for swipe
+            if (touchEndX < touchStartX - threshold) {
+                nextSlide(); // swipe left, go to next slide
+            } else if (touchEndX > touchStartX + threshold) {
+                prevSlide(); // swipe right, go to previous slide
+            }
+        }
+
+        // Start auto-scroll
+        startAutoScroll();
+
+        // Direct sidebar toggle code
+        document.addEventListener('DOMContentLoaded', function() {
+            const navToggle = document.querySelector('.nav-toggle');
+            const sidebar = document.querySelector('.sidebar');
+            
+            console.log('Sidebar elements:', navToggle, sidebar);
+            
+            if (navToggle && sidebar) {
+                navToggle.addEventListener('click', function() {
+                    console.log('Toggle clicked');
+                    sidebar.classList.toggle('active');
+                    navToggle.classList.toggle('active');
+                });
+            }
+        });
+
+        // Global function to toggle sidebar
+        function toggleSidebar() {
+            console.log('Toggle sidebar called');
+            var toggleButton = document.querySelector('.nav-toggle');
+            var sidebar = document.querySelector('.sidebar');
+            
+            if (sidebar) {
+                sidebar.classList.toggle('active');
+            }
+            
+            if (toggleButton) {
+                toggleButton.classList.toggle('active');
+            }
+            
+            return false;
+        }
+
+        // User authentication management
+        document.addEventListener('DOMContentLoaded', function() {
+            const accountLinks = document.getElementById('account-links');
+            const loginRegisterLink = document.getElementById('login-register-link');
+            
+            // Check if user is logged in (using localStorage for demo)
+            const isLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
+            const username = localStorage.getItem('username') || 'User';
+            
+            // Update the account links based on login status
+            if (isLoggedIn) {
+                accountLinks.innerHTML = `
+                    <li><a href="user-profile.html">YOUR PROFILE</a></li>
+                    <li><a href="#" id="logout-link">LOGOUT</a></li>
+                `;
+                
+                // Add logout functionality
+                const logoutLink = document.getElementById('logout-link');
+                if (logoutLink) {
+                    logoutLink.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        localStorage.removeItem('userLoggedIn');
+                        localStorage.removeItem('username');
+                        window.location.reload();
+                    });
+                }
+            } else {
+                accountLinks.innerHTML = `
+                    <li><a href="login.html">LOGIN</a></li>
+                    <li><a href="register.html">REGISTER</a></li>
+                `;
+            }
+        });
+    </script>
+    <script src="js/products.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/performance-optimizations.js"></script>
+</body>
+</html>
+

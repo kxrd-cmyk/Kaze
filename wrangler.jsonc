@@ -1,0 +1,7 @@
+{
+  "name": "kaze-website",
+  "compatibility_date": "2025-05-12",
+  "assets": {
+    "directory": "./dist"
+  }
+} 
