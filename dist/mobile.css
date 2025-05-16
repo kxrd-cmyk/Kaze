@@ -1,0 +1,149 @@
+/* Font Loading */
+@font-face {
+    font-family: 'Hellshunx';
+    src: url('../fonts/Hellshunx.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+    /* Base styles */
+    body {
+        font-size: 16px;
+        line-height: 1.5;
+        -webkit-text-size-adjust: 100%;
+    }
+
+    /* Header and Navigation */
+    .logo {
+        font-size: 24px;
+        padding: 10px;
+    }
+
+    .nav-toggle {
+        display: block;
+        padding: 15px;
+    }
+
+    .sidebar {
+        width: 100%;
+        left: -100%;
+        transition: left 0.3s ease;
+    }
+
+    .sidebar.active {
+        left: 0;
+    }
+
+    /* Product Cards */
+    .product-card {
+        width: 100%;
+        margin: 10px 0;
+    }
+
+    .product-image {
+        height: 200px;
+    }
+
+    /* Buttons */
+    .btn {
+        padding: 12px 20px;
+        font-size: 14px;
+        width: 100%;
+        margin: 5px 0;
+    }
+
+    /* Forms */
+    input, select, textarea {
+        font-size: 16px;
+        padding: 12px;
+    }
+
+    /* Cart */
+    .cart-preview {
+        width: 100%;
+        right: 0;
+    }
+
+    .cart-item {
+        padding: 10px;
+    }
+
+    /* Product Detail */
+    .product-detail {
+        flex-direction: column;
+    }
+
+    .product-image-container {
+        width: 100%;
+    }
+
+    .product-info {
+        width: 100%;
+        padding: 20px;
+    }
+
+    /* Footer */
+    footer {
+        padding: 20px;
+    }
+
+    .footer-section {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    /* Touch-friendly elements */
+    button, 
+    .btn, 
+    .nav-link, 
+    .product-card {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    /* Improved spacing */
+    section {
+        padding: 20px 10px;
+    }
+
+    /* Better text readability */
+    h1 { font-size: 24px; }
+    h2 { font-size: 20px; }
+    h3 { font-size: 18px; }
+    p { font-size: 16px; }
+
+    /* Improved form elements */
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    textarea {
+        font-size: 16px;
+        padding: 12px;
+        margin: 8px 0;
+    }
+
+    /* Better touch targets */
+    .nav-link,
+    .footer-link {
+        padding: 12px;
+        margin: 4px 0;
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+    .logo {
+        font-size: 20px;
+    }
+
+    .product-card {
+        margin: 5px 0;
+    }
+
+    .btn {
+        padding: 10px 16px;
+    }
+} 

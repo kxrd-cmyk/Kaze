@@ -1,0 +1,1658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Shop Kaze's premium streetwear collection. View detailed product information, reviews, and add items to your cart.">
+    <meta name="keywords" content="Kaze, streetwear, fashion, clothing, t-shirts, hoodies, urban fashion, premium clothing, fashion brand, product details">
+    <meta name="author" content="Kaze">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://kaze.com/product-detail.html">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="product">
+    <meta property="og:url" content="https://kaze.com/product-detail.html">
+    <meta property="og:title" content="KAZE | Product Detail">
+    <meta property="og:description" content="Shop Kaze's premium streetwear collection. View detailed product information and reviews.">
+    <meta property="og:image" content="https://kaze.com/images/kaze-product.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://kaze.com/product-detail.html">
+    <meta property="twitter:title" content="KAZE | Product Detail">
+    <meta property="twitter:description" content="Shop Kaze's premium streetwear collection. View detailed product information and reviews.">
+    <meta property="twitter:image" content="https://kaze.com/images/kaze-product.jpg">
+    
+    <title>KAZE | Product Detail</title>
+    <style>
+        @font-face {
+            font-family: 'Hellshunx';
+            src: url('./fonts/Hellshunx.ttf') format('truetype');
+            font-weight: lighter;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 8rem;
+            letter-spacing: 6px;
+            margin-bottom: 0;
+            position: relative;
+            animation: fadeIn 2s ease-in-out;
+            transition: transform 0.3s ease;
+            font-family: 'Hellshunx', sans-serif;
+            font-weight: 100;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5),
+                         0 0 40px rgba(255, 255, 255, 0.3),
+                         0 0 60px rgba(255, 255, 255, 0.2);
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        /* Sidebar Styles */
+        .nav-toggle {
+            position: fixed;
+            left: 30px;
+            top: 30px;
+            z-index: 1000;
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-toggle span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: white;
+            transition: all 0.3s ease;
+        }
+
+        .nav-toggle.active span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+
+        .nav-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .nav-toggle.active span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        .sidebar {
+            position: fixed;
+            left: -300px;
+            top: 0;
+            width: 300px;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 999;
+            padding: 100px 40px 0;
+            transition: left 0.3s ease;
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .nav-category {
+            font-size: 0.8rem;
+            letter-spacing: 3px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 15px;
+            margin-top: 20px;
+        }
+
+        .nav-category:first-child {
+            margin-top: 0;
+        }
+
+        .nav-links {
+            list-style: none;
+            flex-grow: 1;
+            margin-bottom: 20px;
+        }
+
+        .nav-links:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            display: block;
+            padding: 10px 0;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+            transform: translateX(5px);
+        }
+
+        .profile-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+            padding: 20px 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(0, 0, 0, 0.95);
+            width: 100%;
+            margin-top: auto;
+        }
+
+        .profile-link:hover {
+            opacity: 1;
+        }
+
+        .profile-icon {
+            font-size: 1.2rem;
+        }
+
+        /* Cart Styles */
+        .cart-icon {
+            position: fixed;
+            right: 30px;
+            top: 30px;
+            z-index: 1000;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: white;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            filter: brightness(0) invert(1);
+        }
+
+        /* Product Detail Styles */
+        .product-detail {
+            padding: 120px 0 60px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 60px;
+            margin-top: 40px;
+        }
+
+        .product-gallery {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 600px;
+            object-fit: cover;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .product-image:hover {
+            transform: scale(1.02);
+        }
+
+        .product-info {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .product-title {
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-size: 1.8rem;
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        .product-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            opacity: 0.7;
+            margin-bottom: 30px;
+        }
+
+        .product-options {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .option-title {
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .size-options {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .size-option {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .size-option:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .size-option.selected {
+            background: white;
+            color: black;
+            border-color: white;
+        }
+
+        .color-options {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+
+        .color-option.selected {
+            border-color: white;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quantity-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .quantity-value {
+            font-size: 1.2rem;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .add-to-cart-btn {
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 12px;
+            padding: 15px 30px;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .add-to-cart-btn:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-2px);
+        }
+
+        .add-to-cart-btn.added {
+            background-color: #4CAF50;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .add-to-cart-btn:before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0%;
+            height: 0%;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.5s ease;
+        }
+
+        .add-to-cart-btn:active:before {
+            width: 300%;
+            height: 300%;
+            opacity: 0;
+        }
+
+        .product-details {
+            margin-top: 60px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 40px;
+        }
+
+        .details-title {
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .details-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .details-item {
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .details-label {
+            font-size: 1rem;
+            opacity: 0.7;
+        }
+
+        .details-value {
+            font-size: 1rem;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 80px;
+            left: 30px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            opacity: 1;
+            transform: translateX(-5px);
+        }
+
+        /* Floating Cubes Background */
+        .cubes-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .cube {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: float 20s infinite linear;
+            transform-style: preserve-3d;
+            backdrop-filter: blur(5px);
+        }
+
+        /* Large cubes */
+        .cube:nth-child(1) {
+            width: 150px;
+            height: 150px;
+            top: 5%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .cube:nth-child(2) {
+            width: 180px;
+            height: 180px;
+            top: 15%;
+            right: 10%;
+            animation-delay: 3s;
+        }
+
+        /* Medium cubes */
+        .cube:nth-child(3) {
+            width: 120px;
+            height: 120px;
+            bottom: 20%;
+            left: 15%;
+            animation-delay: 6s;
+        }
+
+        .cube:nth-child(4) {
+            width: 140px;
+            height: 140px;
+            top: 40%;
+            right: 20%;
+            animation-delay: 9s;
+        }
+
+        /* Small cubes */
+        .cube:nth-child(5) {
+            width: 90px;
+            height: 90px;
+            bottom: 30%;
+            left: 30%;
+            animation-delay: 12s;
+        }
+
+        .cube:nth-child(6) {
+            width: 100px;
+            height: 100px;
+            top: 60%;
+            right: 30%;
+            animation-delay: 15s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotateX(0) rotateY(0) translateZ(0);
+            }
+            25% {
+                transform: translateY(-150px) rotateX(90deg) rotateY(90deg) translateZ(50px);
+            }
+            50% {
+                transform: translateY(0) rotateX(180deg) rotateY(180deg) translateZ(0);
+            }
+            75% {
+                transform: translateY(150px) rotateX(270deg) rotateY(270deg) translateZ(-50px);
+            }
+            100% {
+                transform: translateY(0) rotateX(360deg) rotateY(360deg) translateZ(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .product-container {
+                flex-direction: column;
+                gap: 40px;
+            }
+
+            .product-image {
+                height: 400px;
+            }
+
+            .product-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Review Section Styles */
+        .reviews-section {
+            padding: 60px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 60px;
+        }
+
+        .reviews-title {
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        /* Review Summary Styles */
+        .review-summary {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 50px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .overall-rating {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .rating-number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .rating-stars {
+            color: #ffd700;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .rating-count {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .rating-bars {
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .rating-bar-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .rating-label {
+            width: 80px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .rating-bar {
+            flex-grow: 1;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin: 0 15px;
+            overflow: hidden;
+        }
+
+        .rating-bar-fill {
+            height: 100%;
+            background: #ffd700;
+            border-radius: 4px;
+        }
+
+        .rating-value {
+            width: 40px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            text-align: right;
+        }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .review-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .review-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .reviewer-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .reviewer-info {
+            flex-grow: 1;
+        }
+
+        .reviewer-name {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .review-date {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .review-rating {
+            color: #ffd700;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .review-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            opacity: 0.8;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #111;
+            padding: 60px 0 30px;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .footer-section {
+            color: #fff;
+        }
+
+        .footer-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .footer-section p {
+            margin-bottom: 10px;
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        .footer-section a {
+            color: #fff;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            opacity: 1;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-bottom p {
+            opacity: 0.6;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+
+        /* Review Form Styles */
+        .add-review-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .add-review-title {
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .review-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .review-form .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .review-form label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .review-form input,
+        .review-form textarea {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            padding: 12px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .review-form input:focus,
+        .review-form textarea:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 5px;
+        }
+
+        .star {
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .star:hover,
+        .star.active {
+            color: #ffd700;
+        }
+
+        .star-rating:hover .star {
+            color: #ffd700;
+        }
+
+        .star-rating .star:hover ~ .star {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .media-upload-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .media-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .media-item {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .media-item img,
+        .media-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .media-item .remove-media {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .submit-review-btn {
+            background: white;
+            color: black;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            align-self: flex-end;
+            margin-top: 10px;
+        }
+
+        .submit-review-btn:hover {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-2px);
+        }
+
+        /* Review Card with Media */
+        .review-media {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .review-media-item {
+            width: 100px;
+            height: 100px;
+            border-radius: 5px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .review-media-item img,
+        .review-media-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <div class="cubes-container">
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+    </div>
+    <button class="nav-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    <nav class="sidebar">
+        <div class="nav-category">CATEGORIES</div>
+        <ul class="nav-links">
+            <li><a href="mens.html">MENS</a></li>
+            <li><a href="womens.html">WOMENS</a></li>
+            <li><a href="latest-releases.html">LATEST RELEASES</a></li>
+        </ul>
+        <a href="login.html" class="profile-link">
+            <div class="profile-icon">👤</div>
+            LOGIN / REGISTER
+        </a>
+    </nav>
+
+    <div class="cart-icon" onclick="window.location.href='cart.html'">
+        🛒
+    </div>
+
+    <section class="product-detail">
+        <div class="container">
+            <a href="kaze.html" style="text-decoration: none; color: inherit; display: block; text-align: center;">
+                <h1 class="logo">Kaze</h1>
+            </a>
+            
+            <div class="product-container">
+                <div class="product-gallery">
+                    <img id="product-image" src="" alt="Product Image" class="product-image">
+                </div>
+                <div class="product-info">
+                    <h2 id="product-title" class="product-title">Product Title</h2>
+                    <p id="product-price" class="product-price">₹0</p>
+                    <p id="product-description" class="product-description">
+                        This is a placeholder description for the product. The actual description will be loaded dynamically based on the product ID.
+                    </p>
+                    
+                    <div class="product-options">
+                        <div class="size-options-container">
+                            <h3 class="option-title">SIZE</h3>
+                            <div class="size-options">
+                                <div class="size-option" data-size="S">S</div>
+                                <div class="size-option" data-size="M">M</div>
+                                <div class="size-option" data-size="L">L</div>
+                                <div class="size-option" data-size="XL">XL</div>
+                                <div class="size-option" data-size="XXL">XXL</div>
+                            </div>
+                        </div>
+                        
+                        <div class="color-options-container">
+                            <h3 class="option-title">COLOR</h3>
+                            <div class="color-options">
+                                <div class="color-option" style="background-color: #000;" data-color="Black"></div>
+                                <div class="color-option" style="background-color: #fff; border: 1px solid rgba(255, 255, 255, 0.3);" data-color="White"></div>
+                                <div class="color-option" style="background-color: #808080;" data-color="Gray"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="quantity-selector">
+                        <button class="quantity-btn" id="decrease-quantity">-</button>
+                        <span class="quantity-value" id="quantity">1</span>
+                        <button class="quantity-btn" id="increase-quantity">+</button>
+                    </div>
+                    
+                    <button class="add-to-cart-btn" id="add-to-cart">ADD TO CART</button>
+                </div>
+            </div>
+            
+            <div class="product-details">
+                <h3 class="details-title">PRODUCT DETAILS</h3>
+                <ul class="details-list">
+                    <li class="details-item">
+                        <span class="details-label">Material</span>
+                        <span class="details-value" id="material">100% Cotton</span>
+                    </li>
+                    <li class="details-item">
+                        <span class="details-label">Care</span>
+                        <span class="details-value" id="care">Machine wash cold</span>
+                    </li>
+                    <li class="details-item">
+                        <span class="details-label">Origin</span>
+                        <span class="details-value" id="origin">India</span>
+                    </li>
+                    <li class="details-item">
+                        <span class="details-label">SKU</span>
+                        <span class="details-value" id="sku">KAZE-001</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="reviews-section">
+        <div class="container">
+            <h2 class="reviews-title">CUSTOMER REVIEWS</h2>
+            
+            <div class="review-summary">
+                <div class="overall-rating">
+                    <div class="rating-number" id="average-rating">4.7</div>
+                    <div class="rating-stars" id="average-stars">★★★★★</div>
+                    <div class="rating-count" id="review-count">Based on 127 reviews</div>
+                </div>
+                
+                <div class="rating-bars">
+                    <div class="rating-bar-container">
+                        <div class="rating-label">5 stars</div>
+                        <div class="rating-bar">
+                            <div class="rating-bar-fill" id="star-5-fill" style="width: 75%;"></div>
+                        </div>
+                        <div class="rating-value" id="star-5-value">75%</div>
+                    </div>
+                    <div class="rating-bar-container">
+                        <div class="rating-label">4 stars</div>
+                        <div class="rating-bar">
+                            <div class="rating-bar-fill" id="star-4-fill" style="width: 15%;"></div>
+                        </div>
+                        <div class="rating-value" id="star-4-value">15%</div>
+                    </div>
+                    <div class="rating-bar-container">
+                        <div class="rating-label">3 stars</div>
+                        <div class="rating-bar">
+                            <div class="rating-bar-fill" id="star-3-fill" style="width: 5%;"></div>
+                        </div>
+                        <div class="rating-value" id="star-3-value">5%</div>
+                    </div>
+                    <div class="rating-bar-container">
+                        <div class="rating-label">2 stars</div>
+                        <div class="rating-bar">
+                            <div class="rating-bar-fill" id="star-2-fill" style="width: 3%;"></div>
+                        </div>
+                        <div class="rating-value" id="star-2-value">3%</div>
+                    </div>
+                    <div class="rating-bar-container">
+                        <div class="rating-label">1 star</div>
+                        <div class="rating-bar">
+                            <div class="rating-bar-fill" id="star-1-fill" style="width: 2%;"></div>
+                        </div>
+                        <div class="rating-value" id="star-1-value">2%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Add Review Form -->
+            <div class="add-review-section">
+                <h3 class="add-review-title">WRITE A REVIEW</h3>
+                <form id="review-form" class="review-form">
+                    <div class="form-group">
+                        <label for="reviewer-name">Your Name</label>
+                        <input type="text" id="reviewer-name" name="reviewer-name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Your Rating</label>
+                        <div class="star-rating">
+                            <span class="star" data-rating="1">★</span>
+                            <span class="star" data-rating="2">★</span>
+                            <span class="star" data-rating="3">★</span>
+                            <span class="star" data-rating="4">★</span>
+                            <span class="star" data-rating="5">★</span>
+                        </div>
+                        <input type="hidden" id="rating-value" name="rating" value="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="review-title">Review Title</label>
+                        <input type="text" id="review-title" name="review-title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="review-text">Your Review</label>
+                        <textarea id="review-text" name="review-text" rows="5" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="review-media">Add Photos/Videos</label>
+                        <div class="media-upload-container">
+                            <input type="file" id="review-media" name="review-media" accept="image/*,video/*" multiple>
+                            <div class="media-preview" id="media-preview"></div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="submit-review-btn">SUBMIT REVIEW</button>
+                </form>
+            </div>
+            
+            <div class="reviews-grid" id="reviews-container">
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reviewer-avatar">JD</div>
+                        <div class="reviewer-info">
+                            <div class="reviewer-name">John Doe</div>
+                            <div class="review-date">March 15, 2024</div>
+                        </div>
+                    </div>
+                    <div class="review-rating">★★★★★</div>
+                    <p class="review-text">Absolutely love this product! The quality is exceptional and it fits perfectly. Will definitely be purchasing more items from KAZE.</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reviewer-avatar">AS</div>
+                        <div class="reviewer-info">
+                            <div class="reviewer-name">Alice Smith</div>
+                            <div class="review-date">March 10, 2024</div>
+                        </div>
+                    </div>
+                    <div class="review-rating">★★★★☆</div>
+                    <p class="review-text">Great product overall. The material is high quality and the design is unique. Shipping was quick and packaging was secure.</p>
+                </div>
+                <div class="review-card">
+                    <div class="review-header">
+                        <div class="reviewer-avatar">RJ</div>
+                        <div class="reviewer-info">
+                            <div class="reviewer-name">Robert Johnson</div>
+                            <div class="review-date">March 5, 2024</div>
+                        </div>
+                    </div>
+                    <div class="review-rating">★★★★★</div>
+                    <p class="review-text">This is my third purchase from KAZE and I'm still impressed with their quality and attention to detail. Highly recommend!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>CONTACT US</h3>
+                <p>1234 Street Name</p>
+                <p>City, State 12345</p>
+                <p>United States</p>
+                <p>Phone: (555) 123-4567</p>
+            </div>
+            <div class="footer-section">
+                <h3>EMAIL</h3>
+                <p><a href="mailto:info@kaze.com">info@kaze.com</a></p>
+                <p><a href="mailto:support@kaze.com">support@kaze.com</a></p>
+                <p><a href="mailto:wholesale@kaze.com">wholesale@kaze.com</a></p>
+            </div>
+            <div class="footer-section">
+                <h3>ABOUT US</h3>
+                <p>Kaze is a premium fashion brand that challenges conventional design boundaries.</p>
+                <p><a href="aboutus.html">Learn more about our story</a></p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 KAZE. All rights reserved. | Embrace the Chaos</p>
+        </div>
+    </footer>
+
+    <script src="js/products.js"></script>
+    <script>
+        // Sidebar Toggle
+        const navToggle = document.querySelector('.nav-toggle');
+        const sidebar = document.querySelector('.sidebar');
+        const closeSidebar = () => {
+            sidebar.classList.remove('active');
+        };
+
+        navToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            navToggle.classList.toggle('active');
+        });
+
+        // Close sidebar when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!sidebar.contains(e.target) && !navToggle.contains(e.target)) {
+                closeSidebar();
+                navToggle.classList.remove('active');
+            }
+        });
+
+        // Close sidebar with ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeSidebar();
+                navToggle.classList.remove('active');
+            }
+        });
+
+        // Cart Functionality
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function updateCartCount() {
+            // Function is now empty - no longer updating cart count
+        }
+
+        // Get product ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('product');
+
+        // Load product data
+        function loadProductData() {
+            const product = products[productId] || {
+                title: 'Product Not Found',
+                price: '₹0',
+                description: 'The requested product could not be found.',
+                image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
+                material: 'N/A',
+                care: 'N/A',
+                origin: 'N/A',
+                sku: 'N/A'
+            };
+
+            // Update page title
+            document.title = `KAZE | ${product.title}`;
+
+            // Update product details
+            document.getElementById('product-image').src = product.image;
+            document.getElementById('product-image').alt = product.title;
+            document.getElementById('product-title').textContent = product.title;
+            document.getElementById('product-price').textContent = product.price;
+            document.getElementById('product-description').textContent = product.description;
+            document.getElementById('material').textContent = product.material;
+            document.getElementById('care').textContent = product.care;
+            document.getElementById('origin').textContent = product.origin;
+            document.getElementById('sku').textContent = product.sku;
+            
+            // Update size options if available
+            if (product.sizes) {
+                const sizeOptionsContainer = document.querySelector('.size-options');
+                sizeOptionsContainer.innerHTML = '';
+                
+                product.sizes.forEach(size => {
+                    const sizeOption = document.createElement('div');
+                    sizeOption.className = 'size-option';
+                    sizeOption.dataset.size = size;
+                    sizeOption.textContent = size;
+                    sizeOption.addEventListener('click', () => {
+                        document.querySelectorAll('.size-option').forEach(opt => opt.classList.remove('selected'));
+                        sizeOption.classList.add('selected');
+                    });
+                    sizeOptionsContainer.appendChild(sizeOption);
+                });
+            }
+            
+            // Update color options if available
+            if (product.colors) {
+                const colorOptionsContainer = document.querySelector('.color-options');
+                colorOptionsContainer.innerHTML = '';
+                
+                product.colors.forEach(color => {
+                    const colorOption = document.createElement('div');
+                    colorOption.className = 'color-option';
+                    colorOption.dataset.color = color.name;
+                    colorOption.style.backgroundColor = color.value;
+                    if (color.name === 'White') {
+                        colorOption.style.border = '1px solid rgba(255, 255, 255, 0.3)';
+                    }
+                    colorOption.addEventListener('click', () => {
+                        document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+                        colorOption.classList.add('selected');
+                    });
+                    colorOptionsContainer.appendChild(colorOption);
+                });
+            }
+        }
+
+        // Size selection
+        const sizeOptions = document.querySelectorAll('.size-option');
+        sizeOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                sizeOptions.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+            });
+        });
+
+        // Color selection
+        const colorOptions = document.querySelectorAll('.color-option');
+        colorOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                colorOptions.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
+            });
+        });
+
+        // Quantity selection
+        const decreaseBtn = document.getElementById('decrease-quantity');
+        const increaseBtn = document.getElementById('increase-quantity');
+        const quantityValue = document.getElementById('quantity');
+
+        decreaseBtn.addEventListener('click', () => {
+            let quantity = parseInt(quantityValue.textContent);
+            if (quantity > 1) {
+                quantityValue.textContent = quantity - 1;
+            }
+        });
+
+        increaseBtn.addEventListener('click', () => {
+            let quantity = parseInt(quantityValue.textContent);
+            quantityValue.textContent = quantity + 1;
+        });
+
+        // Add to cart functionality
+        const addToCartBtn = document.getElementById('add-to-cart');
+        addToCartBtn.addEventListener('click', () => {
+            const product = products[productId];
+            if (!product) return;
+
+            const selectedSize = document.querySelector('.size-option.selected')?.dataset.size || 'M';
+            const selectedColor = document.querySelector('.color-option.selected')?.dataset.color || 'Black';
+            const quantity = parseInt(quantityValue.textContent);
+
+            // Parse the price and format it correctly
+            let price = product.price;
+            if (typeof price === 'string') {
+                price = price.replace('₹', '').replace(',', '');
+            }
+
+            const cartItem = {
+                id: Date.now(),
+                name: `${product.title} - ${selectedSize} - ${selectedColor}`,
+                price: product.price,
+                image: product.image,
+                quantity: quantity
+            };
+
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            const existingItemIndex = cart.findIndex(item => 
+                item.name === cartItem.name
+            );
+
+            if (existingItemIndex !== -1) {
+                cart[existingItemIndex].quantity += quantity;
+            } else {
+                cart.push(cartItem);
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+
+            // Show success message with animation
+            addToCartBtn.classList.add('added');
+            addToCartBtn.textContent = 'ADDED TO CART!';
+            setTimeout(() => {
+                addToCartBtn.textContent = 'ADD TO CART';
+                addToCartBtn.classList.remove('added');
+            }, 2000);
+        });
+
+        // Load product data when page loads
+        window.addEventListener('load', () => {
+            loadProductData();
+        });
+
+        // Reviews Functionality
+        let reviews = [
+            {
+                id: 1,
+                name: 'John Doe',
+                initials: 'JD',
+                rating: 5,
+                title: 'Great Product',
+                text: 'Absolutely love this product! The quality is exceptional and it fits perfectly. Will definitely be purchasing more items from KAZE.',
+                date: 'March 15, 2024',
+                media: []
+            },
+            {
+                id: 2,
+                name: 'Alice Smith',
+                initials: 'AS',
+                rating: 4,
+                title: 'Good Quality',
+                text: 'Great product overall. The material is high quality and the design is unique. Shipping was quick and packaging was secure.',
+                date: 'March 10, 2024',
+                media: []
+            },
+            {
+                id: 3,
+                name: 'Robert Johnson',
+                initials: 'RJ',
+                rating: 5,
+                title: 'Highly Recommend',
+                text: 'This is my third purchase from KAZE and I\'m still impressed with their quality and attention to detail. Highly recommend!',
+                date: 'March 5, 2024',
+                media: []
+            }
+        ];
+
+        // Star Rating Functionality
+        const stars = document.querySelectorAll('.star');
+        const ratingInput = document.getElementById('rating-value');
+
+        stars.forEach(star => {
+            star.addEventListener('click', () => {
+                const rating = parseInt(star.dataset.rating);
+                ratingInput.value = rating;
+                
+                stars.forEach(s => {
+                    if (parseInt(s.dataset.rating) <= rating) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        // Media Upload Functionality
+        const mediaInput = document.getElementById('review-media');
+        const mediaPreview = document.getElementById('media-preview');
+        let uploadedMedia = [];
+
+        mediaInput.addEventListener('change', (e) => {
+            const files = e.target.files;
+            
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+                
+                reader.onload = (e) => {
+                    const mediaItem = document.createElement('div');
+                    mediaItem.className = 'media-item';
+                    
+                    if (file.type.startsWith('image/')) {
+                        mediaItem.innerHTML = `
+                            <img src="${e.target.result}" alt="Review media">
+                            <button class="remove-media" data-index="${uploadedMedia.length}">×</button>
+                        `;
+                    } else if (file.type.startsWith('video/')) {
+                        mediaItem.innerHTML = `
+                            <video src="${e.target.result}" controls></video>
+                            <button class="remove-media" data-index="${uploadedMedia.length}">×</button>
+                        `;
+                    }
+                    
+                    mediaPreview.appendChild(mediaItem);
+                    uploadedMedia.push({
+                        type: file.type.startsWith('image/') ? 'image' : 'video',
+                        url: e.target.result
+                    });
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Remove media item
+        mediaPreview.addEventListener('click', (e) => {
+            if (e.target.classList.contains('remove-media')) {
+                const index = parseInt(e.target.dataset.index);
+                uploadedMedia.splice(index, 1);
+                e.target.parentElement.remove();
+                
+                // Update indices
+                const removeButtons = mediaPreview.querySelectorAll('.remove-media');
+                removeButtons.forEach((btn, i) => {
+                    btn.dataset.index = i;
+                });
+            }
+        });
+
+        // Review Form Submission
+        const reviewForm = document.getElementById('review-form');
+        const reviewsContainer = document.getElementById('reviews-container');
+
+        reviewForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('reviewer-name').value;
+            const rating = parseInt(document.getElementById('rating-value').value);
+            const title = document.getElementById('review-title').value;
+            const text = document.getElementById('review-text').value;
+            
+            if (rating === 0) {
+                alert('Please select a rating');
+                return;
+            }
+            
+            // Create initials from name
+            const initials = name.split(' ').map(n => n[0]).join('').toUpperCase();
+            
+            // Create new review
+            const newReview = {
+                id: Date.now(),
+                name: name,
+                initials: initials,
+                rating: rating,
+                title: title,
+                text: text,
+                date: new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }),
+                media: [...uploadedMedia]
+            };
+            
+            // Add to reviews array
+            reviews.unshift(newReview);
+            
+            // Update reviews display
+            updateReviewsDisplay();
+            
+            // Update rating summary
+            updateRatingSummary();
+            
+            // Reset form
+            reviewForm.reset();
+            ratingInput.value = 0;
+            stars.forEach(star => star.classList.remove('active'));
+            mediaPreview.innerHTML = '';
+            uploadedMedia = [];
+            
+            // Show success message
+            alert('Thank you for your review!');
+        });
+
+        // Update Reviews Display
+        function updateReviewsDisplay() {
+            reviewsContainer.innerHTML = '';
+            
+            reviews.forEach(review => {
+                const reviewCard = document.createElement('div');
+                reviewCard.className = 'review-card';
+                
+                let starsHTML = '';
+                for (let i = 1; i <= 5; i++) {
+                    starsHTML += i <= review.rating ? '★' : '☆';
+                }
+                
+                let mediaHTML = '';
+                if (review.media && review.media.length > 0) {
+                    mediaHTML = '<div class="review-media">';
+                    review.media.forEach(media => {
+                        if (media.type === 'image') {
+                            mediaHTML += `<div class="review-media-item"><img src="${media.url}" alt="Review media"></div>`;
+                        } else if (media.type === 'video') {
+                            mediaHTML += `<div class="review-media-item"><video src="${media.url}" controls></video></div>`;
+                        }
+                    });
+                    mediaHTML += '</div>';
+                }
+                
+                reviewCard.innerHTML = `
+                    <div class="review-header">
+                        <div class="reviewer-avatar">${review.initials}</div>
+                        <div class="reviewer-info">
+                            <div class="reviewer-name">${review.name}</div>
+                            <div class="review-date">${review.date}</div>
+                        </div>
+                    </div>
+                    <div class="review-rating">${starsHTML}</div>
+                    <p class="review-text">${review.text}</p>
+                    ${mediaHTML}
+                `;
+                
+                reviewsContainer.appendChild(reviewCard);
+            });
+        }
+
+        // Update Rating Summary
+        function updateRatingSummary() {
+            const totalReviews = reviews.length;
+            const averageRating = reviews.reduce((sum, review) => sum + review.rating, 0) / totalReviews;
+            
+            // Count reviews by rating
+            const ratingCounts = {1: 0, 2: 0, 3: 0, 4: 0, 5: 0};
+            reviews.forEach(review => {
+                ratingCounts[review.rating]++;
+            });
+            
+            // Calculate percentages
+            const ratingPercentages = {};
+            for (let i = 1; i <= 5; i++) {
+                ratingPercentages[i] = (ratingCounts[i] / totalReviews) * 100;
+            }
+            
+            // Update average rating display
+            document.getElementById('average-rating').textContent = averageRating.toFixed(1);
+            
+            // Update stars display
+            let starsHTML = '';
+            const fullStars = Math.floor(averageRating);
+            const halfStar = averageRating % 1 >= 0.5;
+            
+            for (let i = 1; i <= 5; i++) {
+                if (i <= fullStars) {
+                    starsHTML += '★';
+                } else if (i === fullStars + 1 && halfStar) {
+                    starsHTML += '½';
+                } else {
+                    starsHTML += '☆';
+                }
+            }
+            document.getElementById('average-stars').textContent = starsHTML;
+            
+            // Update review count
+            document.getElementById('review-count').textContent = `Based on ${totalReviews} reviews`;
+            
+            // Update rating bars
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById(`star-${i}-fill`).style.width = `${ratingPercentages[i]}%`;
+                document.getElementById(`star-${i}-value`).textContent = `${Math.round(ratingPercentages[i])}%`;
+            }
+        }
+
+        // Initialize reviews display and rating summary
+        updateReviewsDisplay();
+        updateRatingSummary();
+    </script>
+</body>
+</html> 
