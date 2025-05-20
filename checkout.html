@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaze | Checkout</title>
+    <style>
+        @font-face {
+            font-family: 'Hellshunx';
+            src: url('./fonts/Hellshunx.ttf') format('truetype');
+            font-weight: lighter;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 8rem;
+            letter-spacing: 6px;
+            margin-bottom: 0;
+            position: relative;
+            animation: fadeIn 2s ease-in-out;
+            transition: transform 0.3s ease;
+            font-family: 'Hellshunx', sans-serif;
+            font-weight: 100;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5),
+                         0 0 40px rgba(255, 255, 255, 0.3),
+                         0 0 60px rgba(255, 255, 255, 0.2);
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        /* Main Content */
+        .checkout-container {
+            min-height: 100vh;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            margin-bottom: 40px;
+            text-align: center;
+            opacity: 0.8;
+        }
+
+        .checkout-section {
+            padding: 100px 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+
+        .step {
+            flex: 1;
+            position: relative;
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+        }
+
+        .step.active {
+            color: #000;
+            font-weight: 500;
+        }
+
+        .step.completed {
+            color: #000;
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #eee;
+            color: #999;
+            margin-bottom: 8px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .step.active .step-number {
+            background-color: #000;
+            color: #fff;
+        }
+
+        .step.completed .step-number {
+            background-color: #000;
+            color: #fff;
+        }
+
+        .step-line {
+            position: absolute;
+            top: 12px;
+            left: calc(50% + 15px);
+            right: calc(50% - 15px);
+            height: 1px;
+            background-color: #eee;
+            z-index: 0;
+        }
+
+        .step:last-child .step-line {
+            display: none;
+        }
+
+        /* Main Content Layout */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .left-panel {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+        }
+
+        .right-panel {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            height: fit-content;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            margin-bottom: 24px;
+            color: #fff;
+            position: relative;
+            opacity: 0.8;
+            text-align: center;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .section-header h2 {
+            margin-bottom: 0;
+        }
+
+        .section-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            margin-right: 12px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            color: #fff;
+            opacity: 0.8;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea,
+        .payment-details input, 
+        .payment-details select {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-size: 16px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+        }
+        
+        .custom-select {
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="white" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+        }
+        
+        .payment-details input:hover, .payment-details input:focus, .payment-details select:hover, .payment-details select:focus {
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+            outline: none;
+        }
+        
+        .payment-details select option {
+            background-color: #000;
+            color: white;
+            padding: 10px;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus,
+        .payment-details input:focus,
+        .payment-details select:focus {
+            border-color: rgba(255, 255, 255, 0.5);
+            outline: none;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+        }
+        
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .address-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 16px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        /* Payment Options */
+        .payment-sections {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .payment-section {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .payment-option {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .payment-section:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .payment-option.active {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        
+        .payment-section:has(.payment-option.active) {
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .payment-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .payment-option:hover .payment-icon {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .payment-img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            opacity: 0.9;
+            transition: all 0.3s ease;
+        }
+
+        .payment-option:hover .payment-img {
+            opacity: 1;
+        }
+
+        .payment-info {
+            text-align: center;
+        }
+
+        .payment-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+            color: #fff;
+        }
+
+        .payment-info p {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin: 0;
+            color: #fff;
+        }
+
+        /* Order Summary */
+        .order-summary {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 255, 255, 0.1);
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .item-details {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .item-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+        }
+
+        .price {
+            font-size: 1.2em;
+            color: #00ffff;
+            font-weight: bold;
+        }
+
+        .subtotal {
+            margin: 25px 0;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 255, 255, 0.1);
+        }
+
+        .subtotal span {
+            font-size: 1em;
+            margin-bottom: 10px;
+        }
+
+        .subtotal .total {
+            font-size: 1.6em;
+            color: #00ffff;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        /* Buttons */
+        .checkout-btn {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(45deg, #00ffff, #00e6e6);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.4em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(0, 255, 255, 0.3);
+        }
+
+        /* Payment Details */
+        .payment-details {
+            display: none;
+            padding: 16px 0;
+            margin-top: 20px;
+        }
+
+        .payment-details.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        
+        .card-form {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 10px;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .card-header h3 {
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            margin: 0;
+            color: #fff;
+        }
+        
+        .card-icons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .card-brand-icon {
+            width: 40px;
+            height: 25px;
+            object-fit: contain;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+        
+        .card-brand-icon:hover {
+            opacity: 1;
+        }
+        
+        .save-card-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .save-card-option input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #fff;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Checkout Button */
+        .checkout-btn {
+            width: 100%;
+            padding: 15px;
+            background: white;
+            color: black;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .checkout-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .checkout-btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Custom Select Styles */
+        .custom-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px center;
+            background-size: 12px;
+            padding-right: 30px;
+        }
+
+        /* Order Summary */
+        .order-summary {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .order-summary h2 {
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+            color: #fff;
+            opacity: 0.8;
+            text-align: center;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 1rem;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        .summary-item.total {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #fff;
+            letter-spacing: 2px;
+        }
+
+        .summary-products {
+            margin-bottom: 30px;
+        }
+
+        .product-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .product-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .product-item:hover .product-image {
+            transform: scale(1.05);
+        }
+
+        .product-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .product-name {
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            margin: 0;
+            color: #fff;
+        }
+
+        .product-variant {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin: 0;
+            color: #fff;
+        }
+
+        .product-price {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin: 0;
+            color: #fff;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 992px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 5rem;
+            }
+            
+            .left-panel, .right-panel {
+                padding: 20px;
+            }
+            
+            .address-grid, .form-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .payment-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .product-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .product-image {
+                width: 100%;
+                height: auto;
+                margin-bottom: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 3.5rem;
+            }
+            
+            .section h2 {
+                font-size: 1.2rem;
+            }
+            
+            .payment-option {
+                padding: 15px;
+            }
+        }
+        
+        /* Floating Cubes Background */
+        .cubes-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .cube {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: float 20s infinite linear;
+            transform-style: preserve-3d;
+        }
+        
+        .cube:nth-child(1) {
+            width: 120px;
+            height: 120px;
+            top: 20%;
+            left: 10%;
+        }
+        
+        .cube:nth-child(2) {
+            width: 100px;
+            height: 100px;
+            top: 70%;
+            left: 20%;
+            animation-delay: 5s;
+        }
+        
+        .cube:nth-child(3) {
+            width: 80px;
+            height: 80px;
+            top: 30%;
+            right: 20%;
+            animation-delay: 7s;
+        }
+        
+        .cube:nth-child(4) {
+            width: 150px;
+            height: 150px;
+            top: 80%;
+            right: 10%;
+            animation-delay: 11s;
+        }
+        
+        .cube:nth-child(5) {
+            width: 90px;
+            height: 90px;
+            top: 10%;
+            right: 30%;
+            animation-delay: 13s;
+        }
+        
+        .cube:nth-child(6) {
+            width: 70px;
+            height: 70px;
+            top: 60%;
+            right: 30%;
+            animation-delay: 15s;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
+            100% {
+                transform: translateY(0) rotate(360deg);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* End of Mobile Responsive */
+    </style>
+</head>
+<body>
+    <!-- Floating Cubes Background -->
+    <div class="cubes-container">
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+    </div>
+    
+    <div class="checkout-container">
+        <div class="container">
+            <a href="kaze.html" style="text-decoration: none; color: inherit;">
+                <h1 class="logo">Kaze</h1>
+            </a>
+        </div>
+        <div class="checkout-section">
+            <h2 class="section-title">Checkout</h2>
+            <div class="main-content">
+            <div class="left-panel">
+                <div class="section">
+                    <h2>Shipping Address</h2>
+                    <form class="address-form">
+                        <div class="address-grid">
+                            <div class="form-group">
+                                <label for="firstName">First Name</label>
+                                <input type="text" id="firstName" placeholder="First Name">
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Last Name</label>
+                                <input type="text" id="lastName" placeholder="Last Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="mobile">Mobile Number</label>
+                            <input type="tel" id="mobile" placeholder="Mobile Number">
+                        </div>
+                        <div class="form-group">
+                            <label for="pincode">Pincode</label>
+                            <input type="text" id="pincode" placeholder="Pincode">
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <input type="text" id="address" placeholder="Enter street address" required>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" id="city" placeholder="Enter city" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="state">State</label>
+                                <input type="text" id="state" placeholder="Enter state" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="pincode">Pincode</label>
+                            <input type="text" id="pincode" placeholder="Enter pincode" required>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="section">
+                    <h2>Payment Method</h2>
+                    <div class="payment-sections">
+                        <!-- UPI Section -->
+                        <div class="payment-section" id="upi-section">
+                            <div class="payment-option active" onclick="selectPayment('upi')">
+                                <div class="payment-icon">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e1/UPI-Logo-vector.svg" alt="UPI" class="payment-img">
+                                </div>
+                                <div class="payment-info">
+                                    <h3>UPI</h3>
+                                    <p>Quick and secure payments</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Credit Card Section -->
+                        <div class="payment-section" id="credit-section">
+                            <div class="payment-option" onclick="selectPayment('credit')">
+                                <div class="payment-icon">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Visa.svg/1200px-Visa.svg.png" alt="Credit Card" class="payment-img">
+                                </div>
+                                <div class="payment-info">
+                                    <h3>Credit Card</h3>
+                                    <p>Pay with your credit card</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Debit Card Section -->
+                        <div class="payment-section" id="debit-section">
+                            <div class="payment-option" onclick="selectPayment('debit')">
+                                <div class="payment-icon">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" alt="Debit Card" class="payment-img">
+                                </div>
+                                <div class="payment-info">
+                                    <h3>Debit Card</h3>
+                                    <p>Direct debit from your account</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Net Banking Section -->
+                        <div class="payment-section" id="netbanking-section">
+                            <div class="payment-option" onclick="selectPayment('netbanking')">
+                                <div class="payment-icon">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/2168/2168742.png" alt="Net Banking" class="payment-img">
+                                </div>
+                                <div class="payment-info">
+                                    <h3>Net Banking</h3>
+                                    <p>Bank transfer payment</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="upiDetails" class="payment-details active">
+                        <div class="form-group">
+                            <label for="upiId">UPI ID</label>
+                            <input type="text" id="upiId" placeholder="Enter your UPI ID">
+                        </div>
+                    </div>
+
+                    <div id="creditDetails" class="payment-details">
+                        <div class="card-form">
+                            <div class="card-header">
+                                <h3>Credit Card Details</h3>
+                                <div class="card-icons">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Visa.svg/1200px-Visa.svg.png" alt="Visa" class="card-brand-icon">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" alt="Mastercard" class="card-brand-icon">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/American_Express_logo_%282018%29.svg/1200px-American_Express_logo_%282018%29.svg.png" alt="American Express" class="card-brand-icon">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="creditCardNumber">Card Number</label>
+                                <input type="text" id="creditCardNumber" placeholder="0000 0000 0000 0000" maxlength="19">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="creditExpiry">Expiry Date</label>
+                                    <input type="text" id="creditExpiry" placeholder="MM/YY" maxlength="5">
+                                </div>
+                                <div class="form-group">
+                                    <label for="creditCvv">CVV</label>
+                                    <input type="password" id="creditCvv" placeholder="***" maxlength="3">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="creditNameOnCard">Name on Card</label>
+                                <input type="text" id="creditNameOnCard" placeholder="Enter name as on card">
+                            </div>
+                            <div class="form-group">
+                                <label for="creditBillingAddress">Billing Address</label>
+                                <input type="text" id="creditBillingAddress" placeholder="Enter billing address">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="creditCity">City</label>
+                                    <input type="text" id="creditCity" placeholder="Enter city">
+                                </div>
+                                <div class="form-group">
+                                    <label for="creditPincode">Pincode</label>
+                                    <input type="text" id="creditPincode" placeholder="Enter pincode" maxlength="6">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="save-card-option">
+                                    <input type="checkbox" id="creditSaveCard">
+                                    <label for="creditSaveCard">Save card for future payments</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="debitDetails" class="payment-details">
+                        <div class="card-form">
+                            <div class="card-header">
+                                <h3>Debit Card Details</h3>
+                                <div class="card-icons">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/Visa.svg/1200px-Visa.svg.png" alt="Visa" class="card-brand-icon">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" alt="Mastercard" class="card-brand-icon">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Maestro_2016.svg/1200px-Maestro_2016.svg.png" alt="Maestro" class="card-brand-icon">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/RuPay-Logo.png/1200px-RuPay-Logo.png" alt="RuPay" class="card-brand-icon">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="debitCardNumber">Card Number</label>
+                                <input type="text" id="debitCardNumber" placeholder="0000 0000 0000 0000" maxlength="19">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="debitExpiry">Expiry Date</label>
+                                    <input type="text" id="debitExpiry" placeholder="MM/YY" maxlength="5">
+                                </div>
+                                <div class="form-group">
+                                    <label for="debitCvv">CVV</label>
+                                    <input type="password" id="debitCvv" placeholder="***" maxlength="3">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="debitNameOnCard">Name on Card</label>
+                                <input type="text" id="debitNameOnCard" placeholder="Enter name as on card">
+                            </div>
+                            <div class="form-group">
+                                <label for="debitBank">Bank Name</label>
+                                <select id="debitBank" class="custom-select">
+                                    <option value="">Select Bank</option>
+                                    <option value="sbi">State Bank of India</option>
+                                    <option value="hdfc">HDFC Bank</option>
+                                    <option value="icici">ICICI Bank</option>
+                                    <option value="axis">Axis Bank</option>
+                                    <option value="kotak">Kotak Mahindra Bank</option>
+                                    <option value="pnb">Punjab National Bank</option>
+                                    <option value="bob">Bank of Baroda</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <div class="save-card-option">
+                                    <input type="checkbox" id="debitSaveCard">
+                                    <label for="debitSaveCard">Save card for future payments</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="netbankingDetails" class="payment-details">
+                        <div class="form-group">
+                            <label for="bank">Select Bank</label>
+                            <select id="bank" class="custom-select">
+                                <option value="">Select Bank</option>
+                                <option value="sbi">State Bank of India</option>
+                                <option value="hdfc">HDFC Bank</option>
+                                <option value="icici">ICICI Bank</option>
+                                <option value="axis">Axis Bank</option>
+                                <option value="kotak">Kotak Mahindra Bank</option>
+                                <option value="pnb">Punjab National Bank</option>
+                                <option value="bob">Bank of Baroda</option>
+                                <option value="idbi">IDBI Bank</option>
+                                <option value="canara">Canara Bank</option>
+                                <option value="union">Union Bank of India</option>
+                                <option value="yes">Yes Bank</option>
+                                <option value="indusind">IndusInd Bank</option>
+                                <option value="federal">Federal Bank</option>
+                                <option value="idfc">IDFC FIRST Bank</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                <div class="order-summary">
+                    <h2>Order Summary</h2>
+                    
+                    <div class="summary-products">
+                        <!-- Product items will be dynamically loaded here -->
+                    </div>
+                    
+                    <div class="summary-item">
+                        <span>Subtotal</span>
+                        <span>₹0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Shipping</span>
+                        <span>₹499</span>
+                    </div>
+                    <div class="summary-item total">
+                        <span>Total</span>
+                        <span>₹499</span>
+                    </div>
+                    
+                    <button class="checkout-btn" onclick="processPayment(currentPaymentMethod)">Complete Order</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentPaymentMethod = 'upi';
+        let cart = [];
+        let subtotal = 0;
+        let shipping = 499;
+        let total = 0;
+
+        // Load cart items when the page loads
+        window.addEventListener('DOMContentLoaded', function() {
+            // Load cart items
+            loadCartItems();
+        });
+
+        function loadCartItems() {
+            // Get cart from localStorage
+            cart = JSON.parse(localStorage.getItem('cart')) || [];
+            
+            // Check if cart is empty
+            if (cart.length === 0) {
+                // Redirect to cart page if cart is empty
+                window.location.href = 'cart.html';
+                return;
+            }
+            
+            // Clear existing items
+            const summaryProductsContainer = document.querySelector('.summary-products');
+            summaryProductsContainer.innerHTML = '';
+            
+            // Calculate subtotal
+            subtotal = 0;
+            
+            // Add each item to the summary
+            cart.forEach(item => {
+                // Extract numeric value from price string (remove ₹ and commas)
+                const itemPrice = parseInt(item.price.replace(/[^0-9]/g, ''));
+                subtotal += itemPrice * item.quantity;
+                
+                const productItem = document.createElement('div');
+                productItem.className = 'product-item';
+                productItem.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="product-image">
+                    <div class="product-details">
+                        <div class="product-name">${item.name}</div>
+                        <div class="product-variant">Quantity: ${item.quantity}</div>
+                        <div class="product-price">₹${itemPrice.toLocaleString('en-IN')}</div>
+                    </div>
+                `;
+                
+                summaryProductsContainer.appendChild(productItem);
+            });
+            
+            // Update summary amounts
+            total = subtotal + shipping;
+            
+            document.querySelector('.summary-item:nth-child(1) span:nth-child(2)').textContent = `₹${subtotal.toLocaleString('en-IN')}`;
+            document.querySelector('.summary-item:nth-child(2) span:nth-child(2)').textContent = `₹${shipping.toLocaleString('en-IN')}`;
+            document.querySelector('.summary-item.total span:nth-child(2)').textContent = `₹${total.toLocaleString('en-IN')}`;
+        }
+
+        function selectPayment(method) {
+            // Remove active class from all options
+            document.querySelectorAll('.payment-option').forEach(option => {
+                option.classList.remove('active');
+            });
+
+            // Add active class to selected option
+            event.currentTarget.classList.add('active');
+            
+            // Hide all payment details
+            document.querySelectorAll('.payment-details').forEach(details => {
+                details.classList.remove('active');
+            });
+
+            // Show corresponding payment details
+            document.getElementById(`${method}Details`).classList.add('active');
+            currentPaymentMethod = method;
+            
+            // Highlight the selected payment section
+            document.querySelectorAll('.payment-section').forEach(section => {
+                section.classList.remove('active-section');
+            });
+            document.getElementById(`${method}-section`).classList.add('active-section');
+            
+            // Add card number formatting for credit and debit cards
+            if (method === 'credit' || method === 'debit') {
+                const cardInput = document.getElementById(`${method}CardNumber`);
+                if (cardInput) {
+                    cardInput.addEventListener('input', function(e) {
+                        // Remove non-digits
+                        let value = this.value.replace(/\D/g, '');
+                        // Add space after every 4 digits
+                        value = value.replace(/(.{4})/g, '$1 ').trim();
+                        // Update the input value
+                        this.value = value;
+                    });
+                }
+                
+                const expiryInput = document.getElementById(`${method}Expiry`);
+                if (expiryInput) {
+                    expiryInput.addEventListener('input', function(e) {
+                        // Remove non-digits
+                        let value = this.value.replace(/\D/g, '');
+                        // Format as MM/YY
+                        if (value.length > 2) {
+                            value = value.substring(0, 2) + '/' + value.substring(2, 4);
+                        }
+                        // Update the input value
+                        this.value = value;
+                    });
+                }
+            }
+        }
+
+        function processPayment(method) {
+            // Validate form fields based on payment method
+            let isValid = true;
+            let errorMessage = '';
+            
+            if (method === 'upi') {
+                const upiId = document.getElementById('upiId').value;
+                if (!upiId) {
+                    isValid = false;
+                    errorMessage = 'Please enter your UPI ID';
+                }
+            } else if (method === 'credit') {
+                const cardNumber = document.getElementById('creditCardNumber').value;
+                const expiry = document.getElementById('creditExpiry').value;
+                const cvv = document.getElementById('creditCvv').value;
+                const nameOnCard = document.getElementById('creditNameOnCard').value;
+                const billingAddress = document.getElementById('creditBillingAddress').value;
+                const city = document.getElementById('creditCity').value;
+                const pincode = document.getElementById('creditPincode').value;
+                
+                if (!cardNumber || !expiry || !cvv || !nameOnCard || !billingAddress || !city || !pincode) {
+                    isValid = false;
+                    errorMessage = 'Please fill in all credit card details';
+                }
+            } else if (method === 'debit') {
+                const cardNumber = document.getElementById('debitCardNumber').value;
+                const expiry = document.getElementById('debitExpiry').value;
+                const cvv = document.getElementById('debitCvv').value;
+                const nameOnCard = document.getElementById('debitNameOnCard').value;
+                const bank = document.getElementById('debitBank').value;
+                
+                if (!cardNumber || !expiry || !cvv || !nameOnCard || !bank) {
+                    isValid = false;
+                    errorMessage = 'Please fill in all debit card details';
+                }
+            } else if (method === 'netbanking') {
+                const bank = document.getElementById('bank').value;
+                if (!bank) {
+                    isValid = false;
+                    errorMessage = 'Please select a bank';
+                }
+            }
+            
+            if (!isValid) {
+                alert(errorMessage);
+                return;
+            }
+            
+            // Process payment
+            alert(`Processing payment of ₹${total.toLocaleString('en-IN')} via ${method}...`);
+            
+            // Clear cart after successful payment
+            localStorage.removeItem('cart');
+            
+            // Redirect to confirmation page (you would create this)
+            // window.location.href = 'order-confirmation.html';
+        }
+    </script>
+</body>
+</html>
