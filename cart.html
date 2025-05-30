@@ -231,6 +231,24 @@
             border-color: rgba(255, 255, 255, 0.2);
             transform: translateY(-5px);
         }
+        
+        .product-link {
+            display: flex;
+            flex: 1;
+            transition: all 0.3s ease;
+            align-items: center;
+            gap: 20px;
+            cursor: pointer;
+        }
+        
+        .product-link:hover {
+            opacity: 0.9;
+        }
+        
+        .product-link:hover .cart-item-name {
+            text-decoration: underline;
+            color: rgba(255, 255, 255, 1);
+        }
 
         .remove-item-btn {
             position: absolute;
@@ -640,7 +658,7 @@
             }
         }
 
-        .empty-cart-btn {
+        .continue-shopping-btn {
             width: 100%;
             padding: 20px;
             background: #fff;
@@ -652,8 +670,11 @@
             cursor: pointer;
             transition: all 0.3s ease;
             margin-top: 10px;
+            display: block;
+            text-align: center;
+            text-decoration: none;
         }
-        .empty-cart-btn:hover {
+        .continue-shopping-btn:hover {
             background: #f5f5f5;
             transform: translateY(-2px);
         }
@@ -784,7 +805,7 @@
                             <span>₹0.00</span>
                         </div>
                         <button class="checkout-btn">PROCEED TO CHECKOUT</button>
-                        <button class="empty-cart-btn">EMPTY CART</button>
+                        <a href="kaze.html" class="continue-shopping-btn">CONTINUE SHOPPING</a>
                     </div>
                 </div>
             </div>
@@ -887,15 +908,12 @@
                 cartItems.innerHTML = `
                     <div class="empty-cart">
                         Your cart is empty
-                        <br>
-                        <a href="kaze.html" class="continue-shopping">Continue Shopping</a>
                     </div>
                 `;
                 cartTotal.innerHTML = `<span>Total:</span><span>₹0.00</span>`;
                 document.querySelector('.cart-subtotal').innerHTML = `<span>Subtotal (0 items):</span><span>₹0.00</span>`;
                 document.querySelector('.cart-savings').innerHTML = `<span>Your Savings:</span><span>₹0.00</span>`;
-                return;
-            }
+            } else {
 
             cartItems.innerHTML = cart.map(item => {
                 const price = typeof item.price === 'string' ? 
@@ -909,20 +927,25 @@
                 return `
                 <div class="cart-item" data-id="${item.id}">
                     <button class="remove-item-btn" onclick="removeFromCart('${item.id}')">×</button>
-                    <img src="${item.image}" alt="${item.name}" class="cart-item-image">
-                    <div class="cart-item-details">
-                        <h3 class="cart-item-name">${item.name}</h3>
-                        <p class="cart-item-price">₹${price.toFixed(2)}</p>
-                        ${originalPrice > price ? `<p class="cart-item-original-price">₹${originalPrice.toFixed(2)}</p>` : ''}
-                        <div class="cart-item-quantity">
-                            <button type="button" class="quantity-btn" data-action="decrease">-</button>
-                            <span>${quantity}</span>
-                            <button type="button" class="quantity-btn" data-action="increase">+</button>
+                    <div class="product-link" onclick="navigateToProduct('${item.id}')" style="cursor: pointer;">
+                        <img src="${item.image}" alt="${item.name}" class="cart-item-image" onerror="this.onerror=null; this.src='${item.fallbackImage || 'https://via.placeholder.com/300x300/000000/FFFFFF?text=KAZE'}'">
+                        <div class="cart-item-details">
+                            <h3 class="cart-item-name">${item.name}</h3>
+                            <p class="cart-item-price">₹${price.toFixed(2)}</p>
+                            ${originalPrice > price ? `<p class="cart-item-original-price">₹${originalPrice.toFixed(2)}</p>` : ''}
                         </div>
+                    </div>
+                    <div class="cart-item-quantity">
+                        <button type="button" class="quantity-btn" data-action="decrease">-</button>
+                        <span>${quantity}</span>
+                        <button type="button" class="quantity-btn" data-action="increase">+</button>
                     </div>
                 </div>
                 `;
             }).join('');
+            
+            // No continue shopping button in the items list when items are present
+            }
 
             // Remove any existing event listeners
             const oldButtons = document.querySelectorAll('.quantity-btn');
@@ -955,8 +978,11 @@
 
             const total = cart.reduce((sum, item) => {
                 const price = typeof item.price === 'string' ? 
-                    parseFloat(item.price.replace(/[^0-9.]/g, '')) : 
+                    parseInt(item.price.replace(/[^0-9]/g, '')) : 
                     (item.price !== undefined && !isNaN(parseFloat(item.price))) ? parseFloat(item.price) : 0;
+                const originalPrice = typeof item.originalPrice === 'string' ? 
+                    parseInt(item.originalPrice.replace(/[^0-9]/g, '')) : 
+                    (item.originalPrice !== undefined && !isNaN(parseFloat(item.originalPrice))) ? parseFloat(item.originalPrice) : 0;
                 const quantity = Number(item.quantity) || 1;
                 return sum + (price * quantity);
             }, 0);
@@ -964,7 +990,7 @@
             const subtotal = cart.reduce((sum, item) => {
                 const originalPrice = item.originalPrice || item.price;
                 const price = typeof originalPrice === 'string' ? 
-                    parseFloat(originalPrice.replace(/[^0-9.]/g, '')) : 
+                    parseInt(originalPrice.replace(/[^0-9]/g, '')) : 
                     (originalPrice !== undefined && !isNaN(parseFloat(originalPrice))) ? parseFloat(originalPrice) : 0;
                 const quantity = Number(item.quantity) || 1;
                 return sum + (price * quantity);
@@ -984,14 +1010,20 @@
                 alert('Your cart is empty!');
                 return;
             }
-            alert('Proceeding to checkout...');
+            // Redirect to checkout page
+            window.location.href = 'checkout.html';
         });
 
-        // Empty cart button event listener
-        document.querySelector('.empty-cart-btn').addEventListener('click', function() {
-            localStorage.removeItem('cart');
-            renderCart();
-        });
+        // Continue shopping button is now a direct link to kaze.html
+        
+        // Function to navigate to product detail page
+        window.navigateToProduct = function(productId) {
+            // Prevent event propagation to avoid triggering other click events
+            event.stopPropagation();
+            // Navigate to product detail page with the product ID
+            window.location.href = `product-detail.html?id=${productId}`;
+        };
+
 
         // Add to cart function (for use on product/shop pages)
         function addToCart(product) {
@@ -1020,8 +1052,54 @@
             alert('Added to cart!');
         }
 
+
+
         // Initialize cart on page load
         document.addEventListener('DOMContentLoaded', function() {
+            // Clear the cart first to ensure we add fresh test products
+            localStorage.removeItem('cart');
+            
+            // Add test products
+            let cart = [];
+            
+            // Add two test products
+            const testProducts = [
+                {
+                    id: 'product-001',
+                    name: 'KAZE Oversized Hoodie',
+                    price: 4999.99,
+                    originalPrice: 5999.99,
+                    quantity: 1,
+                    image: 'images/products/hoodie-black.jpg'
+                },
+                {
+                    id: 'product-002',
+                    name: 'KAZE Cargo Pants',
+                    price: 3499.99,
+                    originalPrice: 3999.99,
+                    quantity: 1,
+                    image: 'images/products/cargo-pants.jpg'
+                }
+            ];
+            
+            // Use fallback images if the specified ones don't exist
+            const fallbackImage = 'https://via.placeholder.com/300x300/000000/FFFFFF?text=KAZE';
+            
+            // Check if we need to use fallback images
+            testProducts.forEach(product => {
+                // Set fallback image as a backup
+                product.fallbackImage = fallbackImage;
+            });
+            
+            // Add test products to cart
+            testProducts.forEach(product => {
+                cart.push(product);
+            });
+            
+            localStorage.setItem('cart', JSON.stringify(cart));
+            console.log('Added test products to cart');
+            
+            // Render cart
             renderCart();
         });
     </script>
