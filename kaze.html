@@ -6,6 +6,73 @@
     <meta name="theme-color" content="#000000">
     <title>KAZE | Embrace the Chaos</title>
     <style>
+        /* Video Container Styles */
+        .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        /* YouTube embed styling */
+        .youtube-embed {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .youtube-embed iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 56.25vw; /* 16:9 aspect ratio */
+            min-height: 100vh;
+            min-width: 177.77vh; /* 16:9 aspect ratio */
+            transform: translate(-50%, -50%);
+            border: none;
+        }
+
+        /* Fallback video styling */
+        .fallback-video {
+            display: none; /* Hidden by default */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: cover;
+        }
+
+        /* Show fallback video only if YouTube is not available */
+        .youtube-embed[data-youtube-unavailable] + .fallback-video {
+            display: block;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 0;
+        }
+
+        .logo-container {
+            position: relative;
+            z-index: 1;
+        }
+
         @font-face {
             font-family: 'Hellshunx';
             src: url('https://mjpfpiiachtdamuhosaq.supabase.co/storage/v1/object/public/font/transfonter.org-20250417-053519/HellshunxRegular.woff2') format('woff2');
@@ -14,7 +81,7 @@
             font-display: swap;
         }
 
-        * {
+        * { 
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -64,12 +131,20 @@
             margin-bottom: 0;
             position: relative;
             animation: fadeIn 2s ease-in-out;
-            transition: transform 0.3s ease;
             font-family: 'Hellshunx', sans-serif;
             font-weight: 100;
             text-shadow: 0 0 20px rgba(255, 255, 255, 0.5),
                          0 0 40px rgba(255, 255, 255, 0.3),
-                         0 0 60px rgba(255, 255, 255, 0.2);
+                         0 0 60px rgba(255, 255, 255, 0.1);
+        }
+
+        /* Top Search Bar */
+        .cart-container {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 1000;
+            transition: color 0.3s ease;
         }
 
         .k-symbol {
@@ -125,51 +200,31 @@
             animation: bounce 2s infinite;
         }
 
-        /* Background Animation */
-        .background-animation {
+        /* Video Background */
+        .video-container {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
+            height: 100vh;
             z-index: 1;
-            background: #000;
             overflow: hidden;
         }
 
-        .background-animation::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at center,
-                rgba(255, 255, 255, 0.1) 0%,
-                rgba(255, 255, 255, 0.05) 20%,
-                rgba(255, 255, 255, 0.02) 40%,
-                transparent 70%
-            );
-            animation: pulseGlow 4s ease-in-out infinite;
-        }
-
-        .spiral-container {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        video {
             width: 100%;
             height: 100%;
-            z-index: 2;
+            object-fit: cover;
         }
 
-        .spiral-path {
-            fill: none;
-            stroke: rgba(255, 255, 255, 0.1);
-            stroke-width: 1;
-            stroke-dasharray: 5,5;
-            animation: dash 20s linear infinite;
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7));
+            z-index: 2;
         }
 
         .neon-ring {
@@ -340,11 +395,7 @@
             max-width: 600px;
         }
 
-        .search-box {
-            position: relative;
-            width: 300px;
-            margin: 0 auto;
-        }
+
 
         .search-box input {
             width: 100%;
@@ -634,6 +685,118 @@
             padding: 0 20px;
         }
 
+        .nav-category {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #666;
+            margin: 20px 0 15px 10px;
+            font-weight: 600;
+            position: relative;
+            padding-left: 10px;
+        }
+        
+        .nav-category::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 4px;
+            height: 4px;
+            background: #ff3366;
+            border-radius: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .nav-item {
+            margin-bottom: 5px;
+            position: relative;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            color: #e0e0e0;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: #ff3366;
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            transform: translateX(5px);
+        }
+        
+        .nav-link:hover::before {
+            transform: scaleY(1);
+        }
+        
+        .nav-icon {
+            margin-right: 15px;
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .nav-text {
+            flex: 1;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+        
+        .nav-arrow {
+            font-size: 18px;
+            opacity: 0.5;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        
+        .nav-link:hover .nav-arrow {
+            transform: translateX(3px);
+            opacity: 1;
+        }
+        
+        .nav-badge {
+            background: #ff3366;
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            margin-left: 10px;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
         .footer-section h3 {
             font-size: 1.2rem;
             margin-bottom: 20px;
@@ -715,19 +878,140 @@
 
         .sidebar {
             position: fixed;
-            left: -300px;
             top: 0;
-            width: 300px;
-            height: 100vh;
-            background-color: rgba(0, 0, 0, 0.95);
-            z-index: 999;
-            padding: 100px 40px 0;
-            transition: left 0.3s ease;
-            backdrop-filter: blur(10px);
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            left: -350px;
+            width: 320px;
+            height: 100%;
+            background-color: #0a0a0a;
+            color: #fff;
+            padding: 20px 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            overflow-y: auto;
+            box-shadow: 5px 0 25px rgba(0, 0, 0, 0.5);
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+        }
+        
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid #222;
+            margin-bottom: 15px;
+        }
+        
+        .sidebar-section {
+            padding: 0 20px;
+            margin-bottom: 20px;
+        }
+        
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 20px;
+            border-top: 1px solid #222;
+            text-align: center;
+            background: linear-gradient(transparent, rgba(0,0,0,0.2));
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sidebar-footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .social-link {
+            color: #888;
+            text-decoration: none;
+            font-size: 12px;
+            margin: 0 8px;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+        
+        .social-link:hover {
+            color: #ff3366;
+        }
+        
+        .divider {
+            color: #444;
+            font-size: 10px;
+            margin: 0 2px;
+        }
+        
+        .copyright {
+            font-size: 11px;
+            color: #555;
+            margin-top: 15px;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 400px) {
+            .sidebar {
+                width: 280px;
+                left: -280px;
+            }
+            
+            .social-links {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .divider {
+                display: none;
+            }
+        }
+        
+        .search-container {
+            position: relative;
+            margin: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 14px 20px 14px 45px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            color: #fff;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 25px;
+            color: #fff;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #666;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 16px;
+            pointer-events: none;
+            transition: color 0.3s ease;
         }
 
         .sidebar.active {
@@ -1147,16 +1431,10 @@
             cursor: pointer;
         }
 
-        .release-card:hover {
-            transform: translateY(-10px);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
         .release-image {
             width: 100%;
             height: 400px;
             object-fit: cover;
-            transition: transform 0.3s ease;
         }
 
         .release-card:hover .release-image {
@@ -1298,31 +1576,159 @@
     <link rel="preload" href="./fonts/Hellshunx.ttf" as="font" type="font/ttf" crossorigin>
 </head>
 <body>
+    <header>
+        <div class="video-container">
+            <video autoplay muted loop playsinline id="bg-video">
+                <source src="video/background.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        </div>
+        <style>
+            .video-container video {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                min-width: 100%;
+                min-height: 100%;
+                width: auto;
+                height: auto;
+                transform: translate(-50%, -50%);
+                object-fit: cover;
+            }
+        </style>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const video = document.getElementById('bg-video');
+                
+                // Try to play the video
+                const playPromise = video.play();
+                
+                // Show error if autoplay is prevented
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        console.error('Video play failed:', error);
+                        // Show a play button if autoplay is blocked
+                        const playButton = document.createElement('button');
+                        playButton.textContent = '▶ Play Video';
+                        playButton.style.position = 'fixed';
+                        playButton.style.bottom = '20px';
+                        playButton.style.left = '50%';
+                        playButton.style.transform = 'translateX(-50%)';
+                        playButton.style.padding = '10px 20px';
+                        playButton.style.zIndex = '1000';
+                        playButton.style.backgroundColor = 'rgba(0,0,0,0.7)';
+                        playButton.style.color = 'white';
+                        playButton.style.border = 'none';
+                        playButton.style.borderRadius = '5px';
+                        playButton.style.cursor = 'pointer';
+                        document.body.appendChild(playButton);
+                        
+                        playButton.addEventListener('click', () => {
+                            video.play();
+                            playButton.style.display = 'none';
+                        });
+                    });
+                }
+                
+                // Log video events for debugging
+                video.addEventListener('error', (e) => {
+                    console.error('Video error:', video.error);
+                });
+                
+                video.addEventListener('loadeddata', () => {
+                    console.log('Video loaded successfully');
+                });
+            });
+        </script>
+        <div class="overlay"></div>
+        <div class="logo-container">
+            <h1 class="logo" id="logo">Kaze</h1>
+            <p class="slogan">EMBRACE THE CHAOS</p>
+        </div>
+
+    </header>
+
     <button class="nav-toggle" onclick="toggleSidebar()">
         <span></span>
         <span></span>
         <span></span>
     </button>
     
-    <button class="cart-icon" onclick="window.location.href='cart.html'">
-        🛒
-    </button>
-    
-    <nav class="sidebar">
-        <div class="nav-category">CATEGORIES</div>
-        <ul class="nav-links">
-            <li><a href="mens.html">MENS</a></li>
-            <li><a href="womens.html">WOMENS</a></li>
+    <div class="cart-container">
+        <button class="cart-icon" onclick="window.location.href='cart.html'">
+            🛒
+        </button>
+    </div>
 
-        </ul>
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Search...">
+                <span class="search-icon">🔍</span>
+            </div>
+        </div>
         
-        <!-- Account section moved to bottom of sidebar -->
-        <div style="margin-top: auto;">
+        <div class="sidebar-section">
+            <div class="nav-category">SHOP</div>
+            <ul class="nav-links">
+                <li class="nav-item">
+                    <a href="new-arrivals.html" class="nav-link">
+                        <span class="nav-icon">🆕</span>
+                        <span class="nav-text">New Arrivals</span>
+                        <span class="nav-badge">HOT</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="sidebar-section">
             <div class="nav-category">ACCOUNT</div>
             <ul class="nav-links" id="account-links">
-                <!-- This content will be dynamically populated based on login status -->
-                <li><a href="login.html" id="login-register-link">LOGIN / REGISTER</a></li>
+                <!-- Authenticated User Menu (hidden by default) -->
+                <li class="nav-item auth-only" style="display: none;">
+                    <a href="profile.html" class="nav-link">
+                        <span class="nav-icon">👤</span>
+                        <span class="nav-text">My Profile</span>
+                    </a>
+                </li>
+                <li class="nav-item auth-only" style="display: none;">
+                    <a href="orders.html" class="nav-link">
+                        <span class="nav-icon">📦</span>
+                        <span class="nav-text">My Orders</span>
+                    </a>
+                </li>
+                <li class="nav-item auth-only" style="display: none;">
+                    <a href="wishlist.html" class="nav-link">
+                        <span class="nav-icon">❤️</span>
+                        <span class="nav-text">Wishlist</span>
+                    </a>
+                </li>
+                <li class="nav-item auth-only" style="display: none;">
+                    <a href="#" id="logout-btn" class="nav-link">
+                        <span class="nav-icon">🚪</span>
+                        <span class="nav-text">Logout</span>
+                    </a>
+                </li>
+                
+                <!-- Guest Menu -->
+                <li class="nav-item guest-only">
+                    <a href="login.html" class="nav-link">
+                        <span class="nav-icon">🔑</span>
+                        <span class="nav-text">Login / Register</span>
+                    </a>
+                </li>
             </ul>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="social-links">
+                <a href="#" class="social-link">Instagram</a>
+                <span class="divider">•</span>
+                <a href="#" class="social-link">Twitter</a>
+                <span class="divider">•</span>
+                <a href="#" class="social-link">Facebook</a>
+            </div>
+            <div class="copyright">© 2025 KAZE. All rights reserved.</div>
         </div>
     </nav>
 
@@ -1340,43 +1746,9 @@
         </div>
     </div>
 
-    <header>
-        <div class="background-animation" id="particles">
-            <div class="spiral-container">
-                <svg viewBox="-1000 -1000 2000 2000">
-                    <path class="spiral-path" id="spiralPath" d=""></path>
-                </svg>
-            </div>
-            <div class="neon-ring"></div>
-            <div class="neon-ring"></div>
-            <div class="neon-ring"></div>
-            <div class="neon-ring"></div>
-            <div class="neon-ring"></div>
-        </div>
-        <div class="logo-container">
-            <h1 class="logo" id="logo">Kaze</h1>
-            <p class="slogan">EMBRACE THE CHAOS</p>
-        </div>
-        <div class="scroll-indicator">
-            <span class="scroll-text">SCROLL</span>
-            <div class="scroll-arrow"></div>
-        </div>
-    </header>
-
     <section class="products-section" id="products">
         <div class="container">
             <h2 class="section-title">COLLECTION</h2>
-            <div class="search-container">
-                <div class="search-box">
-                    <input type="text" placeholder="SEARCH PRODUCTS..." id="searchInput">
-                    <div class="search-icon">🔍</div>
-                    <div class="search-dropdown">
-                        <a href="mens.html">MENS</a>
-                        <a href="womens.html">WOMENS</a>
-
-                    </div>
-                </div>
-            </div>
             <div class="carousel-container">
                 <div class="carousel">
                     <div class="carousel-slide">
@@ -1601,21 +1973,12 @@
         // Scroll Animation
         function handleScroll() {
             const productsSection = document.getElementById('products');
-            const searchContainer = document.querySelector('.search-container');
             const scrollPosition = window.scrollY;
             const productsSectionTop = productsSection.offsetTop;
             
             // Show products section when scrolled into view
             if (scrollPosition > window.innerHeight * 0.5) {
                 productsSection.classList.add('visible');
-                searchContainer.classList.add('visible');
-            }
-
-            // Make search bar float when scrolled past the products section
-            if (scrollPosition > productsSectionTop + 100) {
-                searchContainer.classList.add('floating');
-            } else {
-                searchContainer.classList.remove('floating');
             }
         }
 
@@ -1709,25 +2072,7 @@
             });
         }
 
-        // Search Box Functionality
-        const searchInput = document.getElementById('searchInput');
-        const searchDropdown = document.querySelector('.search-dropdown');
 
-        searchInput.addEventListener('focus', () => {
-            searchDropdown.classList.add('active');
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
-                searchDropdown.classList.remove('active');
-            }
-        });
-
-        searchInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                searchDropdown.classList.remove('active');
-            }
-        });
 
         // Carousel functionality
         const carousel = document.querySelector('.carousel');
@@ -1869,40 +2214,131 @@
         }
 
         // User authentication management
-        document.addEventListener('DOMContentLoaded', function() {
-            const accountLinks = document.getElementById('account-links');
-            const loginRegisterLink = document.getElementById('login-register-link');
+        function updateAuthUI(isAuthenticated) {
+            const authElements = document.querySelectorAll('.auth-only');
+            const guestElements = document.querySelectorAll('.guest-only');
             
-            // Check if user is logged in (using localStorage for demo)
-            const isLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
-            const username = localStorage.getItem('username') || 'User';
-            
-            // Update the account links based on login status
-            if (isLoggedIn) {
-                accountLinks.innerHTML = `
-                    <li><a href="user-profile.html">YOUR PROFILE</a></li>
-                    <li><a href="#" id="logout-link">LOGOUT</a></li>
-                `;
-                
-                // Add logout functionality
-                const logoutLink = document.getElementById('logout-link');
-                if (logoutLink) {
-                    logoutLink.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        localStorage.removeItem('userLoggedIn');
-                        localStorage.removeItem('username');
-                        window.location.reload();
-                    });
+            if (isAuthenticated) {
+                // Show authenticated user menu items
+                authElements.forEach(el => el.style.display = 'block');
+                // Hide guest menu items
+                guestElements.forEach(el => el.style.display = 'none');
+                // Update user info in the profile section if it exists
+                const userEmail = localStorage.getItem('userEmail');
+                const profileInfo = document.querySelector('.profile-info');
+                if (profileInfo) {
+                    profileInfo.textContent = userEmail || 'My Account';
                 }
             } else {
-                accountLinks.innerHTML = `
-                    <li><a href="login.html">LOGIN</a></li>
-                    <li><a href="register.html">REGISTER</a></li>
-                `;
+                // Show guest menu items
+                guestElements.forEach(el => el.style.display = 'block');
+                // Hide authenticated user menu items
+                authElements.forEach(el => el.style.display = 'none');
+            }
+        }
+
+        // Check authentication status on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is authenticated (you can replace this with your actual auth check)
+            const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
+            updateAuthUI(isAuthenticated);
+            
+            // Handle logout
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Clear auth data
+                    localStorage.removeItem('isAuthenticated');
+                    localStorage.removeItem('userEmail');
+                    // Update UI
+                    updateAuthUI(false);
+                    // Close sidebar on mobile
+                    const sidebar = document.querySelector('.sidebar');
+                    if (window.innerWidth <= 768 && sidebar) {
+                        sidebar.classList.remove('active');
+                    }
+                    // Redirect to home or login page
+                    window.location.href = 'index.html';
+                });
+            }
+            
+            // Example login function (call this when user successfully logs in)
+            window.loginUser = function(email) {
+                localStorage.setItem('isAuthenticated', 'true');
+                localStorage.setItem('userEmail', email);
+                updateAuthUI(true);
+                // Close sidebar on mobile after login
+                const sidebar = document.querySelector('.sidebar');
+                if (window.innerWidth <= 768 && sidebar) {
+                    sidebar.classList.remove('active');
+                }
+                // Redirect to home page after login
+                window.location.href = 'index.html';
+            };
+            
+            // Expose logout function globally if needed
+            window.logoutUser = function() {
+                localStorage.removeItem('isAuthenticated');
+                localStorage.removeItem('userEmail');
+                updateAuthUI(false);
+                // Close sidebar on mobile after logout
+                const sidebar = document.querySelector('.sidebar');
+                if (window.innerWidth <= 768 && sidebar) {
+                    sidebar.classList.remove('active');
+                }
+                // Redirect to home page after logout
+                window.location.href = 'index.html';
+            };
+        });
+        
+        // Handle login form submission (add this to your login page)
+        /*
+        document.getElementById('login-form')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            // Perform login logic here...
+            // On successful login:
+            window.loginUser(email);
+        });
+        */
+            
+    </script>
+    <script src="js/products.js"></script>
+    <script>
+        // Check if YouTube video fails to load
+        document.addEventListener('DOMContentLoaded', function() {
+            const youtubeEmbed = document.querySelector('.youtube-embed iframe');
+            const fallbackVideo = document.querySelector('.fallback-video');
+            
+            if (youtubeEmbed) {
+                youtubeEmbed.onerror = function() {
+                    // If YouTube video fails to load, show the fallback video
+                    const youtubeContainer = document.querySelector('.youtube-embed');
+                    youtubeContainer.setAttribute('data-youtube-unavailable', 'true');
+                    
+                    // Try to play the fallback video
+                    if (fallbackVideo) {
+                        fallbackVideo.play().catch(e => console.log('Autoplay prevented:', e));
+                    }
+                };
+                
+                // Also try to detect if YouTube is blocked
+                setTimeout(function() {
+                    if (!youtubeEmbed.src.includes('youtube.com/embed/')) {
+                        youtubeEmbed.dispatchEvent(new Event('error'));
+                    }
+                }, 2000);
+            }
+            
+            // Try to autoplay the fallback video if YouTube is not available
+            if (fallbackVideo) {
+                fallbackVideo.muted = true;
+                fallbackVideo.loop = true;
+                fallbackVideo.playsInline = true;
             }
         });
     </script>
-    <script src="js/products.js"></script>
     <script src="js/main.js"></script>
     <script src="js/performance-optimizations.js"></script>
     

@@ -1,0 +1,38 @@
+{
+  "products": [
+    {
+      "id": "p1",
+      "title": "Premium T-Shirt",
+      "price": "$29.99",
+      "description": "High-quality cotton t-shirt with a comfortable fit. Perfect for everyday wear.",
+      "image": "https://via.placeholder.com/500x500?text=Premium+T-Shirt",
+      "sizes": ["S", "M", "L", "XL"],
+      "colors": [
+        { "name": "Black", "value": "#000000" },
+        { "name": "White", "value": "#ffffff" },
+        { "name": "Gray", "value": "#808080" }
+      ],
+      "material": "100% Cotton",
+      "care": "Machine wash cold",
+      "origin": "India",
+      "sku": "KAZE-001"
+    },
+    {
+      "id": "p2",
+      "title": "Classic Hoodie",
+      "price": "$59.99",
+      "description": "Warm and comfortable hoodie with a front pocket. Perfect for cool weather.",
+      "image": "https://via.placeholder.com/500x500?text=Classic+Hoodie",
+      "sizes": ["S", "M", "L", "XL", "XXL"],
+      "colors": [
+        { "name": "Black", "value": "#000000" },
+        { "name": "Navy", "value": "#000080" },
+        { "name": "Charcoal", "value": "#36454F" }
+      ],
+      "material": "80% Cotton, 20% Polyester",
+      "care": "Machine wash cold",
+      "origin": "India",
+      "sku": "KAZE-002"
+    }
+  ]
+}
