@@ -34,19 +34,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Optimized Scroll Handling
     const handleScroll = debounce(() => {
         const productsSection = document.getElementById('products');
-        const searchContainer = document.querySelector('.search-container');
-        const scrollPosition = window.scrollY;
-        const productsSectionTop = productsSection?.offsetTop || 0;
         
-        if (productsSection && scrollPosition > window.innerHeight * 0.5) {
-            productsSection.classList.add('visible');
-            searchContainer?.classList.add('visible');
-        }
-
-        if (searchContainer && scrollPosition > productsSectionTop + 100) {
-            searchContainer.classList.add('floating');
-        } else if (searchContainer) {
-            searchContainer.classList.remove('floating');
+        if (productsSection) {
+            // Any products section related code can go here
         }
     }, 50);
 
