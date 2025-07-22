@@ -2,7 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="true">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#000000">
     <title>KAZE | Embrace the Chaos</title>
     <style>
@@ -421,113 +426,6 @@
             font-size: 2rem;
             margin-bottom: 60px;
             letter-spacing: 3px;
-        }
-
-        .search-container {
-            max-width: 600px;
-            margin: 0 auto 40px;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.5s ease;
-            position: relative;
-            z-index: 1001;
-        }
-
-        .search-container.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .search-container.floating {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 998;
-            margin: 0;
-            width: 90%;
-            max-width: 600px;
-        }
-
-
-
-        .search-box input {
-            width: 100%;
-            padding: 15px 20px;
-            padding-right: 50px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 30px;
-            color: white;
-            font-size: 1rem;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-        }
-
-        .search-box input:focus {
-            outline: none;
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .search-box input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .search-icon {
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: white;
-            pointer-events: none;
-            filter: brightness(0) invert(1);
-        }
-
-        .search-dropdown {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            margin-top: 10px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-            z-index: 1002;
-            backdrop-filter: blur(10px);
-        }
-
-        .search-dropdown.active {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .search-dropdown a {
-            display: block;
-            padding: 15px 20px;
-            color: white;
-            text-decoration: none;
-            font-size: 1rem;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-        }
-
-        .search-dropdown a:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateX(5px);
-        }
-
-        .search-dropdown a:first-child {
-            border-radius: 12px 12px 0 0;
-        }
-
-        .search-dropdown a:last-child {
-            border-radius: 0 0 12px 12px;
         }
 
         .products-grid {
@@ -1029,46 +927,6 @@
             }
         }
         
-        .search-container {
-            position: relative;
-            margin: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .search-input {
-            width: 100%;
-            padding: 14px 20px;
-            padding-right: 50px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 30px;
-            color: #fff;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-            border-radius: 25px;
-            color: #fff;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-        
-        .search-input:focus {
-            outline: none;
-            border-color: #666;
-            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
-        }
-        
-        .search-icon {
-            position: absolute;
-            left: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 16px;
-            pointer-events: none;
-            transition: color 0.3s ease;
-        }
-
         .sidebar.active {
             left: 0;
         }
@@ -1717,12 +1575,8 @@
 
     <nav class="sidebar">
         <div class="sidebar-header">
-            <div class="search-container">
-                <input type="text" class="search-input" placeholder="Search...">
-                <span class="search-icon">🔍</span>
-            </div>
+            <button class="close-sidebar">✕</button>
         </div>
-        
         <div class="sidebar-section">
             <div class="nav-category">SHOP</div>
             <ul class="nav-links">
@@ -1969,6 +1823,26 @@
     <script src="./js/main.js"></script>
     
     <script>
+        // Detect touch device
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        
+        // Add touch class to body if touch device
+        if (isTouchDevice) {
+            document.body.classList.add('touch-device');
+        }
+        
+        // Prevent zoom on double-tap (iOS)
+        let lastTap = 0;
+        document.addEventListener('touchend', function(event) {
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTap;
+            if (tapLength < 300 && tapLength > 0) {
+                event.preventDefault();
+                event.target.click();
+            }
+            lastTap = currentTime;
+        }, false);
+        
         // Create Spiral Path
         function createSpiralPath() {
             const path = document.getElementById('spiralPath');
