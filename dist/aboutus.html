@@ -38,6 +38,9 @@
             background-color: #111;
             padding: 20px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         .header-content {
@@ -57,6 +60,7 @@
         .nav-links {
             display: flex;
             gap: 30px;
+            list-style: none;
         }
 
         .nav-links a {
@@ -71,11 +75,15 @@
         .nav-links a:hover {
             opacity: 1;
         }
+        
+        .nav-links a.active {
+            opacity: 1;
+        }
 
         /* Hero Section */
         .hero {
-            height: 60vh;
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            height: 80vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1441984904996-e0b6ba687e04?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
             background-size: cover;
             background-position: center;
             display: flex;
@@ -83,31 +91,54 @@
             justify-content: center;
             text-align: center;
             margin-bottom: 80px;
+            color: #fff;
         }
 
         .hero-content h1 {
-            font-size: 3.5rem;
+            font-size: 4rem;
             margin-bottom: 20px;
-            letter-spacing: 3px;
+            font-weight: 700;
+            line-height: 1.2;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .hero-content p {
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             max-width: 600px;
             margin: 0 auto;
-            opacity: 0.9;
+            font-weight: 400;
         }
 
+        /* Section Styles */
+        section {
+            padding: 100px 0;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #fff;
+            letter-spacing: 3px;
+        }
+        
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
         /* About Section */
         .about-section {
-            padding: 80px 0;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 60px;
-            letter-spacing: 3px;
+            background-color: #000;
         }
 
         .about-grid {
@@ -116,29 +147,43 @@
             gap: 60px;
             align-items: center;
         }
+        
+        .about-image-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(255, 255, 255, 0.05);
+        }
 
         .about-image {
             width: 100%;
             height: 500px;
             object-fit: cover;
-            border-radius: 10px;
+            transition: transform 0.5s ease;
+        }
+        
+        .about-image-container:hover .about-image {
+            transform: scale(1.05);
         }
 
         .about-content h2 {
-            font-size: 2rem;
+            font-size: 2.2rem;
             margin-bottom: 30px;
+            font-weight: 700;
+            color: #fff;
             letter-spacing: 2px;
         }
 
         .about-content p {
             margin-bottom: 20px;
-            opacity: 0.9;
             font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.8;
         }
 
         /* Values Section */
         .values-section {
-            padding: 80px 0;
+            padding: 100px 0;
             background-color: #111;
         }
 
@@ -152,27 +197,33 @@
             text-align: center;
             padding: 40px;
             background-color: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-            transition: transform 0.3s ease;
+            border-radius: 12px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .value-card:hover {
             transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
         }
 
         .value-icon {
             font-size: 3rem;
             margin-bottom: 20px;
+            color: #fff;
         }
 
         .value-card h3 {
             font-size: 1.5rem;
             margin-bottom: 20px;
+            font-weight: 600;
+            color: #fff;
             letter-spacing: 1px;
         }
 
         .value-card p {
-            opacity: 0.8;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.7;
         }
 
         /* Team Section */
@@ -209,27 +260,94 @@
             font-size: 0.9rem;
         }
 
+        /* Features Section */
+        .features-section {
+            background-color: #000;
+            padding: 100px 0;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+        }
+        
+        .feature-card {
+            background-color: #111;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .feature-image-container {
+            overflow: hidden;
+            height: 300px;
+        }
+        
+        .feature-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .feature-card:hover .feature-image {
+            transform: scale(1.05);
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 20px 20px 10px;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+        
+        .feature-card p {
+            color: rgba(255, 255, 255, 0.7);
+            margin: 0 20px 20px;
+            line-height: 1.6;
+        }
+        
+        .feature-link {
+            display: inline-block;
+            margin: 0 20px 20px;
+            color: #fff;
+            font-weight: 600;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .feature-link:hover {
+            opacity: 0.7;
+        }
+        
         /* Footer Styles */
         footer {
             background-color: #000;
             color: #fff;
-            padding: 40px 0 20px;
-            margin-top: 60px;
+            padding: 60px 0 20px;
+            margin-top: 0;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 40px;
-            padding: 0 20px;
         }
 
         .footer-section h3 {
             font-size: 1.2rem;
             margin-bottom: 20px;
+            font-weight: 600;
+            color: #fff;
             letter-spacing: 2px;
         }
 
@@ -237,6 +355,7 @@
             margin-bottom: 10px;
             font-size: 0.9rem;
             line-height: 1.6;
+            color: rgba(255, 255, 255, 0.7);
         }
 
         .footer-section a {
@@ -259,6 +378,7 @@
         .footer-bottom p {
             font-size: 0.8rem;
             letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.7);
         }
 
         /* Responsive Design */
@@ -301,10 +421,7 @@
 
         /* Navigation styles */
         nav {
-            background-color: #000;
-            padding: 1rem 2rem;
             display: flex;
-            justify-content: space-between;
             align-items: center;
         }
         
@@ -315,6 +432,11 @@
             font-weight: 100;
             font-family: 'Hellshunx', sans-serif;
             letter-spacing: 3px;
+            transition: opacity 0.3s ease;
+        }
+        
+        .logo a:hover {
+            opacity: 0.8;
         }
         
         .nav-links {
@@ -326,110 +448,160 @@
         .nav-links a {
             color: #fff;
             text-decoration: none;
-            transition: color 0.3s;
+            transition: opacity 0.3s;
+            font-weight: 500;
         }
         
         .nav-links a:hover {
-            color: #888;
+            opacity: 0.8;
         }
         
         .nav-links a.active {
-            color: #888;
+            opacity: 1;
+        }
+        
+        /* Additional responsive styles */
+        @media (max-width: 768px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <header>
-        <nav>
-            <div class="logo">
-                <a href="kaze.html">Kaze</a>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <a href="kaze.html">Kaze</a>
+                </div>
+                <nav>
+                    <ul class="nav-links">
+                        <li><a href="kaze.html">Home</a></li>
+                        <li><a href="aboutus.html" class="active">About Us</a></li>
+                        <li><a href="register.html">Register</a></li>
+                    </ul>
+                </nav>
             </div>
-            <ul class="nav-links">
-                <li><a href="kaze.html">Home</a></li>
-                <li><a href="aboutus.html" class="active">About Us</a></li>
-                <li><a href="register.html">Register</a></li>
-            </ul>
-        </nav>
+        </div>
     </header>
 
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1>OUR STORY</h1>
-                <p>Discover the journey of Kaze, from its inception to becoming a revolutionary force in fashion.</p>
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Bringing you closer to the things you love</h1>
+                    <p>Discover the journey of Kaze, from its inception to becoming a revolutionary force in fashion.</p>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="about-section">
-        <div class="container">
-            <h2 class="section-title">ABOUT KAZE</h2>
-            <div class="about-grid">
-                <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Kaze Fashion" class="about-image">
-                <div class="about-content">
-                    <h2>EMBRACE THE CHAOS</h2>
-                    <p>Kaze was born from a simple yet powerful idea: fashion should be an expression of individuality, not conformity. Founded in 2025, our brand has quickly become synonymous with bold design, innovative materials, and a fearless approach to style.</p>
-                    <p>Our name, Kaze, which means "wind" in Japanese, represents the ever-changing nature of fashion and the freedom to express oneself without boundaries. Just as the wind cannot be contained, neither should your style.</p>
-                    <p>We believe that true fashion lies in the unexpected, the unconventional, and the chaotic. Our designs challenge traditional aesthetics, blending street culture with high fashion, and creating pieces that demand attention.</p>
-                    <p>Every Kaze garment is a statement, a rebellion against the ordinary, and an invitation to embrace your unique identity. We don't just create clothes; we create experiences that empower you to stand out in a world of sameness.</p>
+        <section class="about-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Our Story</h2>
+                </div>
+                <div class="about-grid">
+                    <div class="about-image-container">
+                        <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Kaze Fashion" class="about-image">
+                    </div>
+                    <div class="about-content">
+                        <h2>Embrace The Chaos</h2>
+                        <p>Kaze was born from a simple yet powerful idea: fashion should be an expression of individuality, not conformity. Founded in 2025, our brand has quickly become synonymous with bold design, innovative materials, and a fearless approach to style.</p>
+                        <p>Our name, Kaze, which means "wind" in Japanese, represents the ever-changing nature of fashion and the freedom to express oneself without boundaries. Just as the wind cannot be contained, neither should your style.</p>
+                        <p>We believe that true fashion lies in the unexpected, the unconventional, and the chaotic. Our designs challenge traditional aesthetics, blending street culture with high fashion, and creating pieces that demand attention.</p>
+                        <p>Every Kaze garment is a statement, a rebellion against the ordinary, and an invitation to embrace your unique identity. We don't just create clothes; we create experiences that empower you to stand out in a world of sameness.</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="values-section">
-        <div class="container">
-            <h2 class="section-title">OUR VALUES</h2>
-            <div class="values-grid">
-                <div class="value-card">
-                    <div class="value-icon"><i class="fas fa-paint-brush"></i></div>
-                    <h3>CREATIVITY</h3>
-                    <p>We push the boundaries of design, constantly exploring new ideas and innovative approaches to fashion.</p>
+        <section class="values-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Our Values</h2>
+                    <p class="section-subtitle">What drives us forward</p>
                 </div>
-                <div class="value-card">
-                    <div class="value-icon"><i class="fas fa-leaf"></i></div>
-                    <h3>SUSTAINABILITY</h3>
-                    <p>We are committed to reducing our environmental impact through responsible sourcing and production practices.</p>
-                </div>
-                <div class="value-card">
-                    <div class="value-icon"><i class="fas fa-users"></i></div>
-                    <h3>COMMUNITY</h3>
-                    <p>We believe in building a global community of individuals who share our passion for bold, authentic expression.</p>
+                <div class="values-grid">
+                    <div class="value-card">
+                        <div class="value-icon"><i class="fas fa-paint-brush"></i></div>
+                        <h3>Creativity</h3>
+                        <p>We push the boundaries of design, constantly exploring new ideas and innovative approaches to fashion.</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-icon"><i class="fas fa-leaf"></i></div>
+                        <h3>Sustainability</h3>
+                        <p>We are committed to reducing our environmental impact through responsible sourcing and production practices.</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-icon"><i class="fas fa-users"></i></div>
+                        <h3>Community</h3>
+                        <p>We believe in building a global community of individuals who share our passion for bold, authentic expression.</p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+        
+        <section class="features-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Explore What's New</h2>
+                    <p class="section-subtitle">Our continuously evolving features empower you to express yourself in new ways</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-image-container">
+                            <img src="https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Collections" class="feature-image">
+                        </div>
+                        <h3>Collections</h3>
+                        <p>Explore our latest seasonal collections and limited edition pieces.</p>
+                        <a href="#" class="feature-link">View Collections</a>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-image-container">
+                            <img src="https://images.unsplash.com/photo-1551232864-3f0890e580d9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Collaborations" class="feature-image">
+                        </div>
+                        <h3>Collaborations</h3>
+                        <p>Discover our partnerships with artists and designers from around the world.</p>
+                        <a href="#" class="feature-link">Explore Collaborations</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
     <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>CONTACT US</h3>
-                <p>1234 Street Name</p>
-                <p>City, State 12345</p>
-                <p>United States</p>
-                <p>Phone: (555) 123-4567</p>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p>1234 Street Name</p>
+                    <p>City, State 12345</p>
+                    <p>United States</p>
+                    <p>Phone: (555) 123-4567</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Email</h3>
+                    <p><a href="mailto:info@kaze.com">info@kaze.com</a></p>
+                    <p><a href="mailto:support@kaze.com">support@kaze.com</a></p>
+                    <p><a href="mailto:wholesale@kaze.com">wholesale@kaze.com</a></p>
+                </div>
+                <div class="footer-section">
+                    <h3>About Us</h3>
+                    <p>Kaze is a premium fashion brand that challenges conventional design boundaries.</p>
+                    <p><a href="aboutus.html">Learn more about our story</a></p>
+                </div>
+                <div class="footer-section">
+                    <h3>Links</h3>
+                    <p><a href="faq.html">FAQ</a></p>
+                    <p><a href="aboutus.html">About Us</a></p>
+                    <p><a href="login.html">Login</a></p>
+                    <p><a href="register.html">Register</a></p>
+                </div>
             </div>
-            <div class="footer-section">
-                <h3>EMAIL</h3>
-                <p><a href="mailto:info@kaze.com">info@kaze.com</a></p>
-                <p><a href="mailto:support@kaze.com">support@kaze.com</a></p>
-                <p><a href="mailto:wholesale@kaze.com">wholesale@kaze.com</a></p>
+            <div class="footer-bottom">
+                <p>&copy; 2024 KAZE. All rights reserved. | Embrace the Chaos</p>
             </div>
-            <div class="footer-section">
-                <h3>ABOUT US</h3>
-                <p>Kaze is a premium fashion brand that challenges conventional design boundaries.</p>
-                <p><a href="aboutus.html">Learn more about our story</a></p>
-            </div>
-            <div class="footer-section">
-                <h3>LINKS</h3>
-                <p><a href="faq.html">FAQ</a></p>
-                <p><a href="aboutus.html">About Us</a></p>
-                <p><a href="login.html">Login</a></p>
-                <p><a href="register.html">Register</a></p>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 KAZE. All rights reserved. | Embrace the Chaos</p>
         </div>
     </footer>
 </body>

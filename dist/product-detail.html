@@ -965,7 +965,7 @@
         <ul class="nav-links">
             <li><a href="mens.html">MENS</a></li>
             <li><a href="womens.html">WOMENS</a></li>
-            <li><a href="latest-releases.html">LATEST RELEASES</a></li>
+
         </ul>
         <a href="login.html" class="profile-link">
             <div class="profile-icon">👤</div>
@@ -985,7 +985,7 @@
             
             <div class="product-container">
                 <div class="product-gallery">
-                    <img id="product-image" src="" alt="Product Image" class="product-image">
+                    <img id="product-image" src="https://kgfsulkplgwposfhtrlx.supabase.co/storage/v1/object/sign/tee/WhatsApp%20Image%202025-06-27%20at%2013.33.05.jpeg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9iNTExZWFlYi05MDI1LTRjMjQtYmRlMy04ZTk2ODU4OWJiNjkiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJ0ZWUvV2hhdHNBcHAgSW1hZ2UgMjAyNS0wNi0yNyBhdCAxMy4zMy4wNS5qcGVnIiwiaWF0IjoxNzUyNDk5NTA5LCJleHAiOjIwNjc4NTk1MDl9.b4T6mHNB1eN_PULekg9zZ7q7ZP19fdlIUYUigU4GNx0" alt="Product Image" class="product-image">
                 </div>
                 <div class="product-info">
                     <h2 id="product-title" class="product-title">Product Title</h2>
@@ -1208,194 +1208,300 @@
     </footer>
 
     <script src="js/products.js"></script>
+    <style>
+        /* Add loader styles */
+        .loader-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 50vh;
+            text-align: center;
+        }
+
+        .loader {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid #ffffff;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-message {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .error-message h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .error-message p {
+            margin-bottom: 20px;
+            color: #aaa;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 25px;
+            background-color: #fff;
+            color: #000;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #f0f0f0;
+        }
+
+        .added-to-cart-message {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            z-index: 1000;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { bottom: -50px; opacity: 0; }
+            to { bottom: 30px; opacity: 1; }
+        }
+    </style>
     <script>
         // Sidebar Toggle
         const navToggle = document.querySelector('.nav-toggle');
         const sidebar = document.querySelector('.sidebar');
-        const closeSidebar = () => {
-            sidebar.classList.remove('active');
-        };
+        const cartIcon = document.querySelector('.cart-icon');
+        const cartCount = document.querySelector('.cart-count');
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-        navToggle.addEventListener('click', () => {
+        // Close sidebar when clicking outside
+        function closeSidebar(e) {
+            if (!sidebar.contains(e.target) && !navToggle.contains(e.target)) {
+                sidebar.classList.remove('active');
+                navToggle.classList.remove('active');
+            }
+        }
+
+        document.addEventListener('click', closeSidebar);
+
+        navToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
             sidebar.classList.toggle('active');
             navToggle.classList.toggle('active');
         });
 
-        // Close sidebar when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!sidebar.contains(e.target) && !navToggle.contains(e.target)) {
-                closeSidebar();
-                navToggle.classList.remove('active');
-            }
+        // Cart functionality
+        cartIcon.addEventListener('click', (e) => {
+            e.preventDefault();
+            // Add cart page redirection logic here
+            console.log('Cart clicked');
         });
-
-        // Close sidebar with ESC key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeSidebar();
-                navToggle.classList.remove('active');
-            }
-        });
-
-        // Cart Functionality
-        let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
         function updateCartCount() {
-            // Function is now empty - no longer updating cart count
+            cartCount.textContent = cart.length;
         }
 
         // Get product ID from URL
         const urlParams = new URLSearchParams(window.location.search);
-        const productId = urlParams.get('product');
+        const productId = urlParams.get('productId');
+
+        // Show error if no product ID is provided
+        if (!productId) {
+            document.querySelector('.product-container').innerHTML = `
+                <div class="error-message">
+                    <h2>No Product Selected</h2>
+                    <p>Please select a product to view its details.</p>
+                    <a href="kaze.html" class="btn">Browse Products</a>
+                </div>
+            `;
+            return;
+        }
 
         // Load product data
-        function loadProductData() {
-            const product = products[productId] || {
-                title: 'Product Not Found',
-                price: '₹0',
-                description: 'The requested product could not be found.',
-                image: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-                material: 'N/A',
-                care: 'N/A',
-                origin: 'N/A',
-                sku: 'N/A'
-            };
+        async function loadProductData() {
+            try {
+                // Show loader
+                document.querySelector('.product-container').innerHTML = `
+                    <div class="loader-container">
+                        <div class="loader"></div>
+                        <p>Loading product details...</p>
+                    </div>
+                `;
 
-            // Update page title
-            document.title = `KAZE | ${product.title}`;
+                // Load products data from JSON file
+                const response = await fetch('products.json');
+                if (!response.ok) throw new Error('Failed to load products');
+                
+                const data = await response.json();
+                const product = data.products.find(p => p.id === productId);
+                
+                if (!product) {
+                    throw new Error('Product not found');
+                }
 
-            // Update product details
-            document.getElementById('product-image').src = product.image;
-            document.getElementById('product-image').alt = product.title;
-            document.getElementById('product-title').textContent = product.title;
-            document.getElementById('product-price').textContent = product.price;
-            document.getElementById('product-description').textContent = product.description;
-            document.getElementById('material').textContent = product.material;
-            document.getElementById('care').textContent = product.care;
-            document.getElementById('origin').textContent = product.origin;
-            document.getElementById('sku').textContent = product.sku;
-            
-            // Update size options if available
-            if (product.sizes) {
+                // Update the product details in the DOM
+                document.title = `KAZE | ${product.title}`;
+                document.getElementById('product-title').textContent = product.title;
+                document.getElementById('product-price').textContent = product.price;
+                document.getElementById('product-img').src = product.image;
+                document.getElementById('product-img').alt = product.title;
+                document.getElementById('product-description').textContent = product.description;
+                
+                // Update product details
+                document.getElementById('material').textContent = product.material || 'N/A';
+                document.getElementById('care').textContent = product.care || 'N/A';
+                document.getElementById('origin').textContent = product.origin || 'N/A';
+                document.getElementById('sku').textContent = product.sku || 'N/A';
+                
+                // Update meta tags for sharing
+                document.querySelector('meta[property="og:title"]').content = `KAZE | ${product.title}`;
+                document.querySelector('meta[property="og:description"]').content = product.description;
+                document.querySelector('meta[property="og:image"]').content = product.image;
+                document.querySelector('meta[property="twitter:title"]').content = `KAZE | ${product.title}`;
+                document.querySelector('meta[property="twitter:description"]').content = product.description;
+                document.querySelector('meta[property="twitter:image"]').content = product.image;
+
+                // Update sizes
                 const sizeOptionsContainer = document.querySelector('.size-options');
-                sizeOptionsContainer.innerHTML = '';
-                
-                product.sizes.forEach(size => {
-                    const sizeOption = document.createElement('div');
-                    sizeOption.className = 'size-option';
-                    sizeOption.dataset.size = size;
-                    sizeOption.textContent = size;
-                    sizeOption.addEventListener('click', () => {
-                        document.querySelectorAll('.size-option').forEach(opt => opt.classList.remove('selected'));
-                        sizeOption.classList.add('selected');
-                    });
-                    sizeOptionsContainer.appendChild(sizeOption);
-                });
-            }
-            
-            // Update color options if available
-            if (product.colors) {
+                if (sizeOptionsContainer && product.sizes && product.sizes.length > 0) {
+                    sizeOptionsContainer.innerHTML = product.sizes.map(size => 
+                        `<div class="size-option" data-size="${size}">${size}</div>`
+                    ).join('');
+                    
+                    // Initialize size selection after updating the DOM
+                    initializeSelections();
+                } else if (sizeOptionsContainer) {
+                    // Hide size selector if no sizes available
+                    sizeOptionsContainer.parentElement.style.display = 'none';
+                }
+
+                // Update colors if color options exist
                 const colorOptionsContainer = document.querySelector('.color-options');
-                colorOptionsContainer.innerHTML = '';
+                if (colorOptionsContainer && product.colors && product.colors.length > 0) {
+                    colorOptionsContainer.innerHTML = product.colors.map(color => 
+                        `<div class="color-option" style="background-color: ${color.value}" data-color="${color.name}" title="${color.name}"></div>`
+                    ).join('');
+                    
+                    // Select first color by default
+                    const firstColor = colorOptionsContainer.querySelector('.color-option');
+                    if (firstColor) firstColor.classList.add('selected');
+                } else if (colorOptionsContainer) {
+                    // Hide color selector if no colors available
+                    colorOptionsContainer.parentElement.style.display = 'none';
+                }
                 
-                product.colors.forEach(color => {
-                    const colorOption = document.createElement('div');
-                    colorOption.className = 'color-option';
-                    colorOption.dataset.color = color.name;
-                    colorOption.style.backgroundColor = color.value;
-                    if (color.name === 'White') {
-                        colorOption.style.border = '1px solid rgba(255, 255, 255, 0.3)';
-                    }
-                    colorOption.addEventListener('click', () => {
-                        document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
-                        colorOption.classList.add('selected');
-                    });
-                    colorOptionsContainer.appendChild(colorOption);
-                });
+            } catch (error) {
+                console.error('Error loading product:', error);
+                document.querySelector('.product-container').innerHTML = `
+                    <div class="error-message">
+                        <h2>Product Not Found</h2>
+                        <p>Sorry, we couldn't find the product you're looking for.</p>
+                        <a href="kaze.html" class="btn">Continue Shopping</a>
+                    </div>
+                `;
             }
         }
 
-        // Size selection
-        const sizeOptions = document.querySelectorAll('.size-option');
-        sizeOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                sizeOptions.forEach(opt => opt.classList.remove('selected'));
-                option.classList.add('selected');
-            });
-        });
+        // Initialize size and color selection
+        function initializeSelections() {
+            // Size selection
+            const sizeOptions = document.querySelectorAll('.size-option');
+            if (sizeOptions.length > 0) {
+                sizeOptions.forEach(option => {
+                    option.addEventListener('click', () => {
+                        sizeOptions.forEach(opt => opt.classList.remove('selected'));
+                        option.classList.add('selected');
+                    });
+                });
+                
+                // Select first size by default
+                sizeOptions[0].classList.add('selected');
+            }
 
-        // Color selection
-        const colorOptions = document.querySelectorAll('.color-option');
-        colorOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                colorOptions.forEach(opt => opt.classList.remove('selected'));
-                option.classList.add('selected');
+            // Color selection
+            const colorOptions = document.querySelectorAll('.color-option');
+            colorOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    colorOptions.forEach(opt => opt.classList.remove('selected'));
+                    option.classList.add('selected');
+                });
             });
-        });
+        }
 
-        // Quantity selection
+        // Initialize quantity buttons
         const decreaseBtn = document.getElementById('decrease-quantity');
         const increaseBtn = document.getElementById('increase-quantity');
-        const quantityValue = document.getElementById('quantity');
-
-        decreaseBtn.addEventListener('click', () => {
-            let quantity = parseInt(quantityValue.textContent);
-            if (quantity > 1) {
-                quantityValue.textContent = quantity - 1;
-            }
-        });
-
-        increaseBtn.addEventListener('click', () => {
-            let quantity = parseInt(quantityValue.textContent);
-            quantityValue.textContent = quantity + 1;
-        });
+        const quantityElement = document.getElementById('quantity');
+        
+        if (decreaseBtn && increaseBtn && quantityElement) {
+            decreaseBtn.addEventListener('click', () => {
+                let quantity = parseInt(quantityElement.textContent);
+                if (quantity > 1) {
+                    quantityElement.textContent = quantity - 1;
+                }
+            });
+            
+            increaseBtn.addEventListener('click', () => {
+                let quantity = parseInt(quantityElement.textContent);
+                quantityElement.textContent = quantity + 1;
+            });
+        }
 
         // Add to cart functionality
         const addToCartBtn = document.getElementById('add-to-cart');
-        addToCartBtn.addEventListener('click', () => {
-            const product = products[productId];
-            if (!product) return;
+        if (addToCartBtn) {
+            addToCartBtn.addEventListener('click', () => {
+                const selectedSize = document.querySelector('.size-option.selected');
+                const selectedColor = document.querySelector('.color-option.selected');
+                const quantity = parseInt(quantityElement ? quantityElement.textContent : '1');
+                
+                if (!selectedSize) {
+                    alert('Please select a size');
+                    return;
+                }
+                
+                const product = {
+                    id: productId,
+                    title: document.getElementById('product-title').textContent,
+                    price: document.getElementById('product-price').textContent,
+                    image: document.getElementById('product-img').src,
+                    size: selectedSize ? selectedSize.dataset.size : null,
+                    color: selectedColor ? selectedColor.dataset.color : null,
+                    quantity: quantity
+                };
+                
+                // Add to cart
+                cart.push(product);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartCount();
 
-            const selectedSize = document.querySelector('.size-option.selected')?.dataset.size || 'M';
-            const selectedColor = document.querySelector('.color-option.selected')?.dataset.color || 'Black';
-            const quantity = parseInt(quantityValue.textContent);
-
-            // Parse the price and format it correctly
-            let price = product.price;
-            if (typeof price === 'string') {
-                price = price.replace('₹', '').replace(',', '');
-            }
-
-            const cartItem = {
-                id: Date.now(),
-                name: `${product.title} - ${selectedSize} - ${selectedColor}`,
-                price: product.price,
-                image: product.image,
-                quantity: quantity
-            };
-
-            let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            
-            const existingItemIndex = cart.findIndex(item => 
-                item.name === cartItem.name
-            );
-
-            if (existingItemIndex !== -1) {
-                cart[existingItemIndex].quantity += quantity;
-            } else {
-                cart.push(cartItem);
-            }
-
-            localStorage.setItem('cart', JSON.stringify(cart));
-
-            // Show success message with animation
-            addToCartBtn.classList.add('added');
-            addToCartBtn.textContent = 'ADDED TO CART!';
-            setTimeout(() => {
-                addToCartBtn.textContent = 'ADD TO CART';
-                addToCartBtn.classList.remove('added');
-            }, 2000);
-        });
+                // Show success message with animation
+                const originalText = addToCartBtn.textContent;
+                addToCartBtn.classList.add('added');
+                addToCartBtn.textContent = 'ADDED TO CART!';
+                
+                // Reset button after animation
+                setTimeout(() => {
+                    addToCartBtn.textContent = originalText;
+                    addToCartBtn.classList.remove('added');
+                }, 2000);
+            });
+        }
 
         // Load product data when page loads
         window.addEventListener('load', () => {
